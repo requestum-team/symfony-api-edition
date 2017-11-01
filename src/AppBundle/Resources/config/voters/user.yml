@@ -1,0 +1,6 @@
+services:
+    voter.user.owner:
+        class: AppBundle\Security\Authorization\OwnerVoter
+        arguments: [[update, delete], AppBundle\Entity\User, null]
+        tags:
+            - { name: security.voter }

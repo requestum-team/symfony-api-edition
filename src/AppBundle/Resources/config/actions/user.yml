@@ -1,0 +1,64 @@
+services:
+    action.user.list:
+        parent: core.action.abstract
+        class: Requestum\ApiBundle\Action\ListAction
+        arguments:
+            - AppBundle\Entity\User
+
+    action.user.fetch:
+        parent: core.action.abstract
+        class: Requestum\ApiBundle\Action\FetchAction
+        arguments:
+            - AppBundle\Entity\User
+
+    action.user.fetch_current:
+        parent: core.action.abstract
+        class: AppBundle\Action\User\FetchCurrentAction
+        arguments:
+            - AppBundle\Entity\User
+
+    action.user.fetch_account:
+        parent: core.action.abstract
+        class: AppBundle\Action\User\FetchAccountAction
+        arguments:
+            - AppBundle\Entity\User
+
+    action.user.create:
+        parent: core.action.abstract
+        class: Requestum\ApiBundle\Action\CreateAction
+        arguments:
+            - AppBundle\Entity\User
+            - AppBundle\Form\User\UserType
+
+    action.user.update:
+        parent: core.action.abstract
+        class: Requestum\ApiBundle\Action\UpdateAction
+        arguments:
+            - AppBundle\Entity\User
+            - AppBundle\Form\User\UserType
+
+    action.user.delete:
+        parent: core.action.abstract
+        class: Requestum\ApiBundle\Action\DeleteAction
+        arguments:
+            - AppBundle\Entity\User
+
+    action.user.forgot_password:
+            parent: core.action.abstract
+            class: AppBundle\Action\User\ForgotPasswordAction
+            arguments:
+                - AppBundle\Entity\User
+
+    action.user.reset_password:
+            parent: action.user.update
+            arguments:
+                - AppBundle\Entity\User
+                - AppBundle\Form\User\PasswordType
+            calls:
+                - [setOptions, [{fetch_field: 'confirmationToken', access_attribute: null}]]
+
+    action.user.social_login:
+            parent: core.action.abstract
+            class: AppBundle\Action\User\SocialLoginAction
+            arguments:
+                - AppBundle\Entity\User

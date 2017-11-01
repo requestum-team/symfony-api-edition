@@ -1,0 +1,69 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+
+    encoders:
+        AppBundle\Entity\User: bcrypt
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        auth_user_provider:
+            id: auth.security.user_provider
+        in_memory:
+            memory: ~
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        oauth_authorize:
+            pattern: ^/oauth/v2/auth
+            form_login:
+                provider: auth_user_provider
+                check_path: /oauth/v2/auth_login_check
+                login_path: /oauth/v2/auth_login
+            anonymous: true
+
+        api_reset_password:
+            pattern:    ^/api/users/(.*)/password
+            anonymous: true
+            methods: [PATCH, POST]
+
+        api_registration:
+            pattern:    ^/api/users
+            anonymous: true
+            methods: [ POST ]
+
+        api_doc:
+            pattern: ^/api/doc
+            security: false
+
+        api:
+            pattern:    ^/api/
+            fos_oauth:  true
+            stateless:  true
+
+        main:
+            anonymous: ~
+            # activate different ways to authenticate
+
+            # http_basic: ~
+            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: ~
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+    access_decision_manager:
+        allow_if_all_abstain: true
+
+    access_control:

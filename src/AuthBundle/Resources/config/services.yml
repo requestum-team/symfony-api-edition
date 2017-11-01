@@ -1,0 +1,4 @@
+services:
+    auth.security.user_provider:
+        class: AuthBundle\Security\UserProvider
+        arguments: ["@doctrine.orm.entity_manager"]

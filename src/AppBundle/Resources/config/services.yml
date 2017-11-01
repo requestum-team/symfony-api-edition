@@ -1,0 +1,29 @@
+imports:
+  - { resource: actions/* }
+  - { resource: voters/* }
+
+services:
+    user_listener:
+        class: AppBundle\EventListener\UserListener
+        arguments:
+            - '@security.user_password_encoder.generic'
+        tags:
+            - { name: doctrine.orm.entity_listener }
+
+    app.aws.uploader.storage:
+        class: AppBundle\Uploader\Storage\AwsStorage
+        arguments: ["@aws.s3", "%aws_bucket%"]
+
+    app.aws.uploader.storage_base_64:
+        class: AppBundle\Uploader\Storage\AwsStorageBase64
+        arguments: ["@aws.s3", "%aws_bucket%"]
+
+    app.upload_listener:
+        class: AppBundle\EventListener\UploadListener
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
+
+    app.service.reset_password:
+        class: AppBundle\Service\ResetPassword\ResetPassword
+        arguments: ["@doctrine.orm.entity_manager", "@requestum_email_sender", "%default_email_from%", "%reset_password_link_template%"]

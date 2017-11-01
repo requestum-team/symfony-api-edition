@@ -1,0 +1,26 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: localhost
+    database_port: 3306
+    database_name: api_edition
+    database_user: root
+    database_password: root
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: ThisTokenIsNotSoSecretChangeIt
+    cors_allow_origin: 'http://localhost'
+    aws_key: AKIAJJPAH2PM2XBENSYQ
+    aws_secret: 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
+    aws_region: null
+    aws_ses_region: null
+    aws_bucket: evo
+    mailer_port: null
+    mailer_encryption: null
+    mailer_spool:
+        type: file
+        path: '%kernel.root_dir%/spool'
+    default_email_from: support@witley.com
+    varnish_urls:
+        - 'http://varnish'

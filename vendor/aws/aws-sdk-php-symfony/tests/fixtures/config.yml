@@ -1,0 +1,30 @@
+framework:
+    secret: "Rosebud was the name of his sled."
+
+aws:
+    version: latest
+    region: us-east-1
+    credentials:
+        key: not-a-real-key
+        secret: "@@not-a-real-secret" # this will be escaped as '@not-a-real-secret'
+    DynamoDb:
+        region: us-west-2
+    S3:
+        version: '2006-03-01'
+    Sqs:
+        credentials: "@a_service"
+    CloudSearchDomain:
+        endpoint: https://search-with-some-subdomain.us-east-1.cloudsearch.amazonaws.com
+
+services:
+    'Aws\DynamoDb\DynamoDbClient':
+        class: Aws\DynamoDb\DynamoDbClient
+        arguments:
+            -
+                region: eu-central-1
+                version: '2012-08-10'
+    a_service:
+        class: Aws\Credentials\Credentials
+        arguments:
+            - a-different-fake-key
+            - a-different-fake-secret

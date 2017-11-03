@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
+class ComposerStaticInitd2378fe6ca92e39f34811a2cc18ced85
 {
     public static $files = array (
         '92c8763cd6170fce6fcfe7e26b4e8c10' => __DIR__ . '/..' . '/symfony/phpunit-bridge/bootstrap.php',
@@ -12,15 +12,14 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
         '32dcc8afd4335739640db7d200c1971d' => __DIR__ . '/..' . '/symfony/polyfill-apcu/bootstrap.php',
-        '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -41,10 +40,10 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         'S' => 
         array (
             'Symfony\\Polyfill\\Util\\' => 22,
-            'Symfony\\Polyfill\\Php72\\' => 23,
             'Symfony\\Polyfill\\Php70\\' => 23,
             'Symfony\\Polyfill\\Php56\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Apcu\\' => 22,
             'Symfony\\Component\\' => 18,
             'Symfony\\Bundle\\SwiftmailerBundle\\' => 33,
             'Symfony\\Bundle\\MonologBundle\\' => 29,
@@ -58,7 +57,6 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
             'Sensio\\Bundle\\GeneratorBundle\\' => 30,
             'Sensio\\Bundle\\FrameworkExtraBundle\\' => 35,
             'Sensio\\Bundle\\DistributionBundle\\' => 33,
-            'Sanpi\\Behatch\\' => 14,
         ),
         'R' => 
         array (
@@ -73,7 +71,6 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
-            'PhpCsFixer\\' => 11,
         ),
         'O' => 
         array (
@@ -82,24 +79,17 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         'N' => 
         array (
             'Nelmio\\CorsBundle\\' => 18,
-            'Negotiation\\' => 12,
         ),
         'M' => 
         array (
             'Monolog\\' => 8,
         ),
-        'L' => 
-        array (
-            'League\\HTMLToMarkdown\\' => 22,
-        ),
         'J' => 
         array (
-            'JsonSchema\\' => 11,
             'JmesPath\\' => 9,
         ),
         'I' => 
         array (
-            'Interop\\Container\\' => 18,
             'Incenteev\\ParameterHandler\\' => 27,
         ),
         'G' => 
@@ -107,7 +97,6 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
-            'GeckoPackages\\PHPUnit\\' => 22,
         ),
         'F' => 
         array (
@@ -127,14 +116,7 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         ),
         'C' => 
         array (
-            'Composer\\Semver\\' => 16,
             'Composer\\CaBundle\\' => 18,
-        ),
-        'B' => 
-        array (
-            'Behatch\\' => 8,
-            'Behat\\Mink\\Driver\\' => 18,
-            'Behat\\Mink\\' => 11,
         ),
         'A' => 
         array (
@@ -170,10 +152,6 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-util',
         ),
-        'Symfony\\Polyfill\\Php72\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php72',
-        ),
         'Symfony\\Polyfill\\Php70\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php70',
@@ -185,6 +163,10 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Polyfill\\Apcu\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-apcu',
         ),
         'Symfony\\Component\\' => 
         array (
@@ -238,10 +220,6 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         array (
             0 => __DIR__ . '/..' . '/sensio/distribution-bundle',
         ),
-        'Sanpi\\Behatch\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/behatch/contexts/src/class_aliases',
-        ),
         'Requestum\\EmailSenderBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/requestum/email-sender-bundle',
@@ -274,10 +252,6 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
-        'PhpCsFixer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/friendsofphp/php-cs-fixer/src',
-        ),
         'OAuth2\\' => 
         array (
             0 => __DIR__ . '/..' . '/friendsofsymfony/oauth2-php/lib',
@@ -286,29 +260,13 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         array (
             0 => __DIR__ . '/..' . '/nelmio/cors-bundle',
         ),
-        'Negotiation\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/willdurand/negotiation/src/Negotiation',
-        ),
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
-        'League\\HTMLToMarkdown\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/league/html-to-markdown/src',
-        ),
-        'JsonSchema\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
-        ),
         'JmesPath\\' => 
         array (
             0 => __DIR__ . '/..' . '/mtdowling/jmespath.php/src',
-        ),
-        'Interop\\Container\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
         ),
         'Incenteev\\ParameterHandler\\' => 
         array (
@@ -325,10 +283,6 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
-        ),
-        'GeckoPackages\\PHPUnit\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/gecko-packages/gecko-php-unit/src/PHPUnit',
         ),
         'Fig\\Link\\' => 
         array (
@@ -370,25 +324,9 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         array (
             0 => __DIR__ . '/..' . '/doctrine/doctrine-bundle',
         ),
-        'Composer\\Semver\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/composer/semver/src',
-        ),
         'Composer\\CaBundle\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
-        ),
-        'Behatch\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/behatch/contexts/src',
-        ),
-        'Behat\\Mink\\Driver\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/behat/mink-browserkit-driver/src',
-        ),
-        'Behat\\Mink\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/behat/mink/src',
         ),
         'Aws\\Symfony\\' => 
         array (
@@ -454,13 +392,6 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
                 0 => __DIR__ . '/..' . '/gedmo/doctrine-extensions/lib',
             ),
         ),
-        'E' => 
-        array (
-            'EasyRdf_' => 
-            array (
-                0 => __DIR__ . '/..' . '/easyrdf/easyrdf/lib',
-            ),
-        ),
         'D' => 
         array (
             'Doctrine\\ORM\\' => 
@@ -490,26 +421,6 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
             array (
                 0 => __DIR__ . '/..' . '/behat/transliterator/src',
             ),
-            'Behat\\Testwork' => 
-            array (
-                0 => __DIR__ . '/..' . '/behat/behat/src',
-            ),
-            'Behat\\Symfony2Extension' => 
-            array (
-                0 => __DIR__ . '/..' . '/behat/symfony2-extension/src',
-            ),
-            'Behat\\MinkExtension' => 
-            array (
-                0 => __DIR__ . '/..' . '/behat/mink-extension/src',
-            ),
-            'Behat\\Gherkin' => 
-            array (
-                0 => __DIR__ . '/..' . '/behat/gherkin/src',
-            ),
-            'Behat\\Behat' => 
-            array (
-                0 => __DIR__ . '/..' . '/behat/behat/src',
-            ),
         ),
     );
 
@@ -525,19 +436,7 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
         'Locale' => __DIR__ . '/..' . '/symfony/symfony/src/Symfony/Component/Intl/Resources/stubs/Locale.php',
         'NumberFormatter' => __DIR__ . '/..' . '/symfony/symfony/src/Symfony/Component/Intl/Resources/stubs/NumberFormatter.php',
         'ParseError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/ParseError.php',
-        'PhpCsFixer\\Tests\\Test\\AbstractFixerTestCase' => __DIR__ . '/..' . '/friendsofphp/php-cs-fixer/tests/Test/AbstractFixerTestCase.php',
-        'PhpCsFixer\\Tests\\Test\\AbstractIntegrationTestCase' => __DIR__ . '/..' . '/friendsofphp/php-cs-fixer/tests/Test/AbstractIntegrationTestCase.php',
-        'PhpCsFixer\\Tests\\Test\\Assert\\AssertTokensTrait' => __DIR__ . '/..' . '/friendsofphp/php-cs-fixer/tests/Test/Assert/AssertTokensTrait.php',
-        'PhpCsFixer\\Tests\\Test\\IntegrationCase' => __DIR__ . '/..' . '/friendsofphp/php-cs-fixer/tests/Test/IntegrationCase.php',
-        'PhpCsFixer\\Tests\\Test\\IntegrationCaseFactory' => __DIR__ . '/..' . '/friendsofphp/php-cs-fixer/tests/Test/IntegrationCaseFactory.php',
-        'SebastianBergmann\\Diff\\Chunk' => __DIR__ . '/..' . '/sebastian/diff/src/Chunk.php',
-        'SebastianBergmann\\Diff\\Diff' => __DIR__ . '/..' . '/sebastian/diff/src/Diff.php',
-        'SebastianBergmann\\Diff\\Differ' => __DIR__ . '/..' . '/sebastian/diff/src/Differ.php',
-        'SebastianBergmann\\Diff\\LCS\\LongestCommonSubsequence' => __DIR__ . '/..' . '/sebastian/diff/src/LCS/LongestCommonSubsequence.php',
-        'SebastianBergmann\\Diff\\LCS\\MemoryEfficientImplementation' => __DIR__ . '/..' . '/sebastian/diff/src/LCS/MemoryEfficientLongestCommonSubsequenceImplementation.php',
-        'SebastianBergmann\\Diff\\LCS\\TimeEfficientImplementation' => __DIR__ . '/..' . '/sebastian/diff/src/LCS/TimeEfficientLongestCommonSubsequenceImplementation.php',
-        'SebastianBergmann\\Diff\\Line' => __DIR__ . '/..' . '/sebastian/diff/src/Line.php',
-        'SebastianBergmann\\Diff\\Parser' => __DIR__ . '/..' . '/sebastian/diff/src/Parser.php',
+        'SessionUpdateTimestampHandlerInterface' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/SessionUpdateTimestampHandlerInterface.php',
         'SqlFormatter' => __DIR__ . '/..' . '/jdorn/sql-formatter/lib/SqlFormatter.php',
         'TypeError' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/TypeError.php',
     );
@@ -545,11 +444,11 @@ class ComposerStaticInit995826cb6a334434586b8bee3dc59d00
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit995826cb6a334434586b8bee3dc59d00::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit995826cb6a334434586b8bee3dc59d00::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr4 = ComposerStaticInit995826cb6a334434586b8bee3dc59d00::$fallbackDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit995826cb6a334434586b8bee3dc59d00::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit995826cb6a334434586b8bee3dc59d00::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd2378fe6ca92e39f34811a2cc18ced85::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd2378fe6ca92e39f34811a2cc18ced85::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInitd2378fe6ca92e39f34811a2cc18ced85::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitd2378fe6ca92e39f34811a2cc18ced85::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitd2378fe6ca92e39f34811a2cc18ced85::$classMap;
 
         }, null, ClassLoader::class);
     }

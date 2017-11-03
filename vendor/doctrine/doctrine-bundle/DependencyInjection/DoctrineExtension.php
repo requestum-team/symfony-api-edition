@@ -23,7 +23,9 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Bridge\Doctrine\DependencyInjection\AbstractDoctrineExtension;
+use Symfony\Bridge\Doctrine\Form\Type\DoctrineType;
 use Symfony\Component\Config\FileLocator;
 use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\SymfonyBridgeAdapter;
 use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader;
@@ -43,11 +45,6 @@ class DoctrineExtension extends AbstractDoctrineExtension
      * @var string
      */
     private $defaultConnection;
-
-    /**
-     * @var array
-     */
-    private $entityManagers;
 
     /**
      * @var SymfonyBridgeAdapter
@@ -112,6 +109,7 @@ class DoctrineExtension extends AbstractDoctrineExtension
         $this->defaultConnection = $config['default_connection'];
 
         $container->setAlias('database_connection', sprintf('doctrine.dbal.%s_connection', $this->defaultConnection));
+        $container->getAlias('database_connection')->setPublic(true);
         $container->setAlias('doctrine.dbal.event_manager', new Alias(sprintf('doctrine.dbal.%s_connection.event_manager', $this->defaultConnection), false));
 
         $container->setParameter('doctrine.dbal.connection_factory.types', $config['types']);
@@ -191,6 +189,7 @@ class DoctrineExtension extends AbstractDoctrineExtension
 
         $def = $container
             ->setDefinition(sprintf('doctrine.dbal.%s_connection', $name), new $defitionClassname('doctrine.dbal.connection'))
+            ->setPublic(true)
             ->setArguments(array(
                 $options,
                 new Reference(sprintf('doctrine.dbal.%s_connection.configuration', $name)),
@@ -322,14 +321,18 @@ class DoctrineExtension extends AbstractDoctrineExtension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('orm.xml');
 
-        $this->entityManagers = array();
-        foreach (array_keys($config['entity_managers']) as $name) {
-            $this->entityManagers[$name] = sprintf('doctrine.orm.%s_entity_manager', $name);
+        if (class_exists(AbstractType::class) && method_exists(DoctrineType::class, 'reset')) {
+            $container->getDefinition('form.type.entity')->addTag('kernel.reset', array('method' => 'reset'));
         }
-        $container->setParameter('doctrine.entity_managers', $this->entityManagers);
+
+        $entityManagers = array();
+        foreach (array_keys($config['entity_managers']) as $name) {
+            $entityManagers[$name] = sprintf('doctrine.orm.%s_entity_manager', $name);
+        }
+        $container->setParameter('doctrine.entity_managers', $entityManagers);
 
         if (empty($config['default_entity_manager'])) {
-            $tmp = array_keys($this->entityManagers);
+            $tmp = array_keys($entityManagers);
             $config['default_entity_manager'] = reset($tmp);
         }
         $container->setParameter('doctrine.default_entity_manager', $config['default_entity_manager']);
@@ -340,6 +343,7 @@ class DoctrineExtension extends AbstractDoctrineExtension
         }
 
         $container->setAlias('doctrine.orm.entity_manager', sprintf('doctrine.orm.%s_entity_manager', $config['default_entity_manager']));
+        $container->getAlias('doctrine.orm.entity_manager')->setPublic(true);
 
         $config['entity_managers'] = $this->fixManagersAutoMappings($config['entity_managers'], $container->getParameter('kernel.bundles'));
 
@@ -483,6 +487,7 @@ class DoctrineExtension extends AbstractDoctrineExtension
 
         $container
             ->setDefinition(sprintf('doctrine.orm.%s_entity_manager', $entityManager['name']), new $definitionClassname('doctrine.orm.entity_manager.abstract'))
+            ->setPublic(true)
             ->setArguments(array(
                 new Reference(sprintf('doctrine.dbal.%s_connection', $entityManager['connection'])),
                 new Reference(sprintf('doctrine.orm.%s_configuration', $entityManager['name'])),

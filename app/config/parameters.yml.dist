@@ -27,8 +27,6 @@ parameters:
 
     cors_allow_origin: http://localhost
 
-    varnish_urls: [http://varnish]
-
     aws_key:
     aws_secret:
     aws_region:

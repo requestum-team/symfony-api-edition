@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5801f12cb82c56a088a089ddf7ae757",
+    "content-hash": "b5801f12cb82c56a088a089ddf7ae751",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2632,12 +2632,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/requestum-team/ApiBundle.git",
-                "reference": "d76b034111a2dc9774800d1608f8a47d879e3724"
+                "reference": "47c245ff72bb6a055142636c012e0a3255961f79"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/d76b034111a2dc9774800d1608f8a47d879e3724",
-                "reference": "d76b034111a2dc9774800d1608f8a47d879e3724",
+                "reference": "47c245ff72bb6a055142636c012e0a3255961f79",
                 "shasum": ""
             },
             "require": {

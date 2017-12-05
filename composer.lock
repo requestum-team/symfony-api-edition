@@ -2636,7 +2636,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/d76b034111a2dc9774800d1608f8a47d879e3724",
+                "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/47c245ff72bb6a055142636c012e0a3255961f79",
                 "reference": "47c245ff72bb6a055142636c012e0a3255961f79",
                 "shasum": ""
             },

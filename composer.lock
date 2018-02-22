@@ -2632,12 +2632,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/requestum-team/ApiBundle.git",
-                "reference": "47c245ff72bb6a055142636c012e0a3255961f79"
+                "reference": "fad1ac5d430f8d2360f959b7902b457140becb7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/47c245ff72bb6a055142636c012e0a3255961f79",
-                "reference": "47c245ff72bb6a055142636c012e0a3255961f79",
+                "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/fad1ac5d430f8d2360f959b7902b457140becb7d",
+                "reference": "fad1ac5d430f8d2360f959b7902b457140becb7d",
                 "shasum": ""
             },
             "require": {

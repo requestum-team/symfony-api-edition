@@ -59,6 +59,6 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return UserInterface::class === $class;
+        return User::class === $class;
     }
 }

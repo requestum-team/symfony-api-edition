@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5801f12cb82c56a088a089ddf7ae751",
+    "content-hash": "b5801f12cb82c56a088a089ddf7ae757",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2632,12 +2632,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/requestum-team/ApiBundle.git",
-                "reference": "fad1ac5d430f8d2360f959b7902b457140becb7d"
+                "reference": "93407652a951e02ba053e894ba3ba976c5bb8f43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/fad1ac5d430f8d2360f959b7902b457140becb7d",
-                "reference": "fad1ac5d430f8d2360f959b7902b457140becb7d",
+                "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/93407652a951e02ba053e894ba3ba976c5bb8f43",
+                "reference": "93407652a951e02ba053e894ba3ba976c5bb8f43",
                 "shasum": ""
             },
             "require": {
@@ -2689,7 +2689,7 @@
                 "bundle",
                 "symfony"
             ],
-            "time": "2017-11-01 15:18:55"
+            "time": "2018-05-28 14:03:24"
         },
         {
             "name": "requestum/email-sender-bundle",

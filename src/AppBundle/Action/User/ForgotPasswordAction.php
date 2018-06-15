@@ -4,6 +4,7 @@ namespace AppBundle\Action\User;
 
 use Requestum\ApiBundle\Action\EntityAction;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ForgotPasswordAction
@@ -19,6 +20,6 @@ class ForgotPasswordAction extends EntityAction
 
         $this->get('app.service.reset_password')->sendEmail($user);
 
-        return $this->handleResponse(true);
+        return $this->handleResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

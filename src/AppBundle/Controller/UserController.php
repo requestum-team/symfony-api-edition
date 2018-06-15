@@ -154,7 +154,7 @@ class UserController extends BaseController
      *     section = "Users reset password",
      * )
      *
-     * @Route(path="/users/{email}/password-reset-token", methods={"POST"})
+     * @Route(path="/users/{email}/forgot-password", methods={"PATCH"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -176,7 +176,7 @@ class UserController extends BaseController
      *     section = "Users reset password",
      * )
      *
-     * @Route(path="/users/{confirmationToken}/password", methods={"PATCH"})
+     * @Route(path="/users/{confirmationToken}/reset-password", methods={"PATCH"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

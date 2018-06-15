@@ -115,15 +115,6 @@ fos_oauth_server:
             access_token_lifetime: 1209600
             refresh_token_lifetime: 1209600
 
-aws:
-    version: 'latest'
-    region: "%aws_region%"
-    credentials:
-        key: "%aws_key%"
-        secret: "%aws_secret%"
-    S3:
-        version: 'latest'
-
 oneup_uploader:
     chunks:
         maxage: 86400

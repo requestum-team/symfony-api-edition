@@ -2444,12 +2444,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/requestum-team/ApiBundle.git",
-                "reference": "d9490362a4e4e6ffaf179c1d2bb0dcc7867fa249"
+                "reference": "4116c61bde98d5b7aabb5de6ebbb221a30d12f86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/d9490362a4e4e6ffaf179c1d2bb0dcc7867fa249",
-                "reference": "d9490362a4e4e6ffaf179c1d2bb0dcc7867fa249",
+                "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/4116c61bde98d5b7aabb5de6ebbb221a30d12f86",
+                "reference": "4116c61bde98d5b7aabb5de6ebbb221a30d12f86",
                 "shasum": ""
             },
             "require": {
@@ -2501,7 +2501,7 @@
                 "bundle",
                 "symfony"
             ],
-            "time": "2018-06-08 15:13:00"
+            "time": "2018-06-20 04:55:44"
         },
         {
             "name": "requestum/email-sender-bundle",

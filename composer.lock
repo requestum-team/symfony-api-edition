@@ -2444,12 +2444,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/requestum-team/ApiBundle.git",
-                "reference": "4116c61bde98d5b7aabb5de6ebbb221a30d12f86"
+                "reference": "ecc4b35836218b5e3fef32ab0e1c266acd96b54d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/4116c61bde98d5b7aabb5de6ebbb221a30d12f86",
-                "reference": "4116c61bde98d5b7aabb5de6ebbb221a30d12f86",
+                "url": "https://api.github.com/repos/requestum-team/ApiBundle/zipball/ecc4b35836218b5e3fef32ab0e1c266acd96b54d",
+                "reference": "ecc4b35836218b5e3fef32ab0e1c266acd96b54d",
                 "shasum": ""
             },
             "require": {
@@ -2501,7 +2501,7 @@
                 "bundle",
                 "symfony"
             ],
-            "time": "2018-06-20 04:55:44"
+            "time": "2018-07-18T12:11:47+00:00"
         },
         {
             "name": "requestum/email-sender-bundle",
@@ -2546,7 +2546,7 @@
                 "email",
                 "swiftmailer"
             ],
-            "time": "2017-01-12 14:40:36"
+            "time": "2017-01-12T14:40:36+00:00"
         },
         {
             "name": "sensio/distribution-bundle",

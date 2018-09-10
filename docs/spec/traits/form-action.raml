@@ -1,0 +1,14 @@
+body:
+    application/json:
+        type: <<inputType>>
+responses:
+    422:
+        description: If validation failed
+        body:
+            application/json:
+                type: UnporcessableEntityBody
+    400:
+        description: If malformed body
+        body:
+            application/json:
+                type: BadResponseBody

@@ -16,3 +16,6 @@
 /vendor/
 /web/bundles/
 .idea/
+node_modules
+web/docs
+web/docs/sandbox/index.html

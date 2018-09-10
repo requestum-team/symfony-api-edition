@@ -1,0 +1,13 @@
+is: [paginated, expandable]
+description: Returns paginated list entities
+responses:
+    200:
+        body:
+            application/json:
+                type:
+                    type: object
+                    properties:
+                        entities:
+                            type: <<type>>[]
+                        total:
+                            type: integer

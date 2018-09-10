@@ -1,0 +1,16 @@
+description: |
+  This API supports OAuth 2.0 for authenticating all API requests.
+type: x-oauth
+describedBy:
+ headers:
+   Authorization:
+     description: |
+        Used to send a valid OAuth 2 access token
+     type: string
+ responses:
+   401:
+     description: |
+       Bad or expired token
+   403:
+     description: |
+       Bad OAuth request

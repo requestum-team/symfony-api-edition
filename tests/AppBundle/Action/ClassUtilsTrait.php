@@ -8,7 +8,7 @@ trait ClassUtilsTrait
 {
     public function getMethodAnnotationValue($annotation)
     {
-        $annotations = Test::parseTestMethodAnnotations(get_called_class(), $this->getName());
+        $annotations = Test::parseTestMethodAnnotations(get_called_class(), $this->getName(false));
 
         if (!isset($annotations['method'][$annotation])) {
             return null;

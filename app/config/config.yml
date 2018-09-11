@@ -88,21 +88,6 @@ nelmio_cors:
     paths:
         '^/': ~
 
-nelmio_api_doc:
-    name: Symfony API Edition
-    cache:
-        enabled: true
-        file: "%kernel.cache_dir%/api-doc.cache"
-    sandbox:
-        authentication:
-            delivery: header
-            name:     Authorization
-        body_format:
-            formats: []
-        request_format:
-            formats: {'json': 'application/json'}
-            method: accept_header
-
 fos_oauth_server:
     db_driver: orm
     client_class:        AuthBundle\Entity\Client

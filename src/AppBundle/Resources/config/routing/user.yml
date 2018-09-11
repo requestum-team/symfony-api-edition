@@ -1,0 +1,36 @@
+user.list:
+    path: /users
+    methods: GET
+    defaults: { _controller: action.user.list:executeAction }
+
+user.create:
+    path: /users
+    methods: POST
+    defaults: { _controller: action.user.create:executeAction }
+
+user.me:
+    path: /users/me
+    methods: GET
+    defaults: { _controller: action.user.fetch_current:executeAction }
+
+user.fetch:
+    path: /users/{id}
+    methods: GET
+    defaults: { _controller: action.user.fetch:executeAction }
+
+user.request_update_token:
+    path: /users/{email}/update-token
+    methods: POST
+    defaults: { _controller: action.user.request_update_token:executeAction }
+
+user.update_by_token:
+    path: /users/{confirmationToken}
+    methods: PATCH
+    defaults: { _controller: action.user.update_by_token:executeAction }
+    requirements:
+        confirmationToken: ^t_.+
+
+user.update:
+    path: /users/{id}
+    methods: PATCH
+    defaults: { _controller: action.user.update:executeAction }

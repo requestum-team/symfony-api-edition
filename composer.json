@@ -28,7 +28,6 @@
         "friendsofsymfony/oauth-server-bundle": "^1.5",
         "guzzlehttp/guzzle": "^6.0",
         "incenteev/composer-parameter-handler": "^2.0",
-        "nelmio/api-doc-bundle": "^2.13",
         "nelmio/cors-bundle": "^1.4",
         "oneup/uploader-bundle": "^1.8",
         "phpdocumentor/reflection-docblock": "^3.0",

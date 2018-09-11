@@ -18,7 +18,6 @@ class AppKernel extends Kernel
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
-            new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Oneup\UploaderBundle\OneupUploaderBundle(),
             new Requestum\EmailSenderBundle\RequestumEmailSenderBundle(),
             new Requestum\ApiBundle\RequestumApiBundle(),

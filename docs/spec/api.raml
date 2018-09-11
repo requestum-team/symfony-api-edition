@@ -79,16 +79,6 @@ types:
                 }
             }
 
-    SiteAdminInput:
-        type: object
-        properties:
-            site: integer
-
-    SiteAdmin:
-        type: object
-        properties:
-            site: Site|integer
-
     User:
         type: object
         properties:
@@ -115,207 +105,7 @@ types:
         properties:
             plainPassword: string
 
-    SeriesInput:
-        type: object
-        properties:
-            name: string
-            title: string
-            active: boolean
-            site:
-                type: integer
-                description: site Id
 
-    Series:
-        type: SeriesInput
-        properties:
-            currentTournament: Tournament
-
-    TournamentInput:
-        type: object
-        properties:
-            series: integer
-            description: string
-            title: string
-            games: Game[]
-            rules: Rule[]
-            winingRules: WiningRule[]
-            openDate: datetime
-            betStartDate: datetime
-            betEndDate: datetime
-            systemProfitPercentage: integer
-            account: integer
-            minJackpot: integer
-
-    Tournament:
-        type: TournamentInput
-        properties:
-            id: integer
-            rules: Rule[]
-            jackpot: integer
-
-    Game:
-        type: object
-        properties:
-            homeTeam: string
-            awayTeam: string
-            date: datetime
-
-    Rule:
-        type: RuleInput
-        properties:
-            doubles: integer
-            triples: integer
-            betCost: integer
-
-    RuleInput:
-        type: object
-        properties:
-            doubles: integer
-            triples: integer
-            betCost: integer
-
-    BetCardInput:
-        type: object
-        properties:
-            tournament: integer
-            user: integer
-            bets: BetInput[]
-
-    BetInput:
-        type: object
-        properties:
-            game: string
-            prediction:
-                type: integer
-                description: "in binary system: 2^0 - home team win, 2^1 - draw, 2^2 - away team win; combination is a sum"
-
-    BetCard:
-        type: BetCardInput
-        properties:
-            tournamnet: Tournament
-            user: integer|User
-            bets: integer[]|Bet[]
-            rule: integer|Rule
-            createdAt: string|DateTime
-            tournamentTitle: string
-
-    Bet:
-        type: BetInput
-        properties:
-            game: string|Game
-            cost: integer
-
-    BatchPatchInput:
-        type: object
-        properties:
-            active: boolean
-
-    BatchInput:
-        type: object
-        properties:
-            site:
-                type: integer|Site
-                description: site Id
-            expirationDate: datetime|null
-            active: boolean
-            value: integer
-
-    Batch:
-        type: object
-        properties:
-            id: integer
-            mk: string
-            author: integer|User
-            site: integer|Site
-            expirationDate: string|DateTime
-            value: integer
-            active: boolean
-            state: string
-            amount: integer
-            enabled: boolean
-            batchExports: ExportBatch[]
-
-    ApplyScratchCard:
-        type: object
-        properties:
-            user: integer
-
-    ScratchCard:
-        type: object
-        properties:
-            id: string
-            number: string
-            status: string
-            batch: id|Batch
-            user: id|User
-
-    GenerateBatch:
-        type: object
-        properties:
-            id:
-                type: integer
-                description: Batch Id
-            amount: integer
-
-    ExportBatch:
-        type: object
-        properties:
-            id:
-                type: integer
-                description: ExportBatch Id
-            type:
-                type: string
-                description: file type ('csv', 'pdf, 'txt')
-            filename:
-                type: string
-
-    WiningRuleInput:
-        type: object
-        properties:
-            gainPart: integer
-            misses: integer
-
-    WiningRule:
-        type: WiningRuleInput
-
-    Site:
-        type: object
-        properties:
-            id: integer
-            slug: string
-            enabled: boolean
-    TournamentResultInput:
-        type: object
-        properties:
-            status: string
-            games: GameResultInput[]
-
-    GameResultInput:
-        type: object
-        properties:
-            result: integer
-
-    Operation:
-        type: object
-        properties:
-            id: integer
-            status: string
-            amount: integer
-            accountOwnerType: string
-            accountOwnerId: integer
-            initiator: string
-            transaction: integer
-
-    Transaction:
-        type: object
-        properties:
-            id: integer
-            status: string
-            operations: Operation[]
-
-    BatchPrint:
-        type: file
-        fileTypes: ['pdf', 'csv']
 
 /oauth/v2/token:
     post:
@@ -334,14 +124,14 @@ types:
                         description: |
                           Grant type can be one of:<br>
                           "client_credentials" for annonymous token<br>
-                          "urn:requestum:oauth2:grant-type:external-service" for user token granted by external auth service<br>
+#                          "urn:requestum:oauth2:grant-type:external-service" for user token granted by external auth service<br>
                           "password" for regular user
                         type: string
                         required: true
-                    service:
-                        description: Used with "urn:requestum:oauth2:grant-type:external-service" grant type, to specify external auth service. This api supports "facebook" and "google".
-                        type: string
-                        required: false
+#                    service:
+#                        description: Used with "urn:requestum:oauth2:grant-type:external-service" grant type, to specify external auth service. This api supports "facebook" and "google".
+#                        type: string
+#                        required: false
                     token:
                         description: Used with "urn:requestum:oauth2:grant-type:external-service" grant type, to pass external service access token.
                         type: string
@@ -360,9 +150,7 @@ types:
             is: [clientSecured, createAction: {inputType: UserInput, type: User}]
         get:
             is: [secured, listAction: {type: User}, sortable]
-            queryParameters:
-                role:
-                    description: User role, can be "user", "admin" or "superadmin"
+
         /me:
             get:
                 is: [secured, fetchAction: {type: User}]
@@ -397,117 +185,7 @@ types:
                                     type: NotFoundBody
                     204:
                         description: On success
-    /series:
-        get:
-            is: [clientSecured, listAction: {type: Series}, sortable]
-            queryParameters:
-                active: boolean
-        post:
-            is: [adminSecured, createAction: {inputType: SeriesInput, type: Series}]
-        /{name}:
-            get:
-                is: [clientSecured, fetchAction: {type: Series}]
-    /bet-card:
-        post:
-            is: [secured, createAction: {inputType: BetCardInput, type: BetCard}]
-        get:
-            is: [adminSecured, listAction: {type: BetCard}, sortable]
-            queryParameters:
-                tournament_status:
-                    description: Tournament status. 'pending' or 'finished' for now
-                    type: string
-                    required: false
-        /my:
-            get:
-                is: [secured, listAction: {type: BetCard}, sortable]
-                queryParameters:
-                    tournament:
-                        description: Tournament Id
-                        type: string
-                        required: false
-                    tournament_status:
-                        description: Tournament status. 'pending' or 'finished' for now
-                        type: string
-                        required: false
 
-    /batchs:
-        post:
-            is: [adminSecured, createAction: {inputType: BatchInput, type: Batch}]
-        get:
-            is: [adminSecured, listAction: {type: Batch}, sortable]
-
-        /{id}:
-            get:
-                is: [adminSecured, fetchAction: {type: Batch}]
-            patch:
-                is: [adminSecured, updateAction: {inputType: BatchPatchInput, type: Batch}]
-        /generate:
-            post:
-                is: [adminSecured, createAction: {inputType: GenerateBatch, type: Batch}]
-
-    /scratch-card:
-        get:
-            is: [adminSecured, listAction: {type: ScratchCard}, sortable]
-            queryParameters:
-                user?: string
-                batch?: string
-                number?: string
-                status?: string
-
-        /apply:
-            /{batch_mk}:
-                /{card_number}:
-                    patch:
-                        is: [secured, updateAction: {inputType: ApplyScratchCard, type: ScratchCard}]
-
-    /tournaments:
-        post:
-            is: [adminSecured, createAction: {inputType: TournamentInput, type: Tournament}]
-        get:
-            is: [clientSecured, listAction: {type: Tournament}, sortable]
-            queryParameters:
-                series:
-                    description: Series Id
-                    type: string
-                    required: false
-                betStartDate:
-                    description: bet startd date string
-                    type: string
-                    required: false
-        /{id}:
-            get:
-                is: [secured, fetchAction: {type: Tournament}]
-            patch:
-                is: [adminSecured, updateAction: {inputType: TournamentInput, type: Tournament}]
-            delete:
-                is: [adminSecured, deleteAction]
-            /transit:
-                patch:
-                    is: [adminSecured, transitAction: {inputType: TournamentResultInput, type: Tournament, description: !include ./strings/tournament-transitions.md}]
-        /draft:
-            get:
-                is: [secured, fetchAction: {type: Tournament}]
-
-    /sites:
-        post:
-            is: [adminSecured, createAction: {inputType: Site, type: Site}]
-        get:
-            is: [adminSecured, listAction: {type: Site}, sortable]
-            queryParameters:
-                enabled: boolean
-        /{id}:
-            get:
-                is: [adminSecured, fetchAction: {type: Site}]
-            patch:
-                is: [adminSecured, updateAction: {inputType: Site, type: Site}]
-
-    /transactions:
-        get:
-            is: [adminSecured, listAction: {type: Transaction}, sortable]
-
-    /operations:
-        get:
-            is: [adminSecured, listAction: {type: Operation}, sortable]
     /download:
         /{id}:
             get:

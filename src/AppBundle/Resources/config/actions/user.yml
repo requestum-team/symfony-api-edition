@@ -1,52 +1,38 @@
 services:
-
-    filter_extension.user_access:
-        class: AppBundle\Action\User\FilterExtension\AccessFilterExtension
-        arguments:
-            - '@security.token_storage'
-
-    action.user.abstract:
-        abstract: true
-        public: true
-        calls:
-            - ["addFiltersExtension", ["@filter_extension.user_access"]]
-
     action.user.list:
-        parent: action.user.abstract
+        parent: core.action.abstract
         class: Requestum\ApiBundle\Action\ListAction
         arguments:
             - AppBundle\Entity\User
-        calls:
-            - [setOptions, [{filters: ['order-by', 'role']}]]
 
     action.user.fetch:
-        parent: action.user.abstract
+        parent: core.action.abstract
         class: Requestum\ApiBundle\Action\FetchAction
         arguments:
             - AppBundle\Entity\User
 
     action.user.fetch_current:
-        parent: action.user.abstract
+        parent: core.action.abstract
         class: AppBundle\Action\User\FetchCurrentAction
         arguments:
             - AppBundle\Entity\User
 
     action.user.create:
-        parent: action.user.abstract
+        parent: core.action.abstract
         class: Requestum\ApiBundle\Action\CreateAction
         arguments:
             - AppBundle\Entity\User
             - AppBundle\Form\User\UserType
 
     action.user.update:
-        parent: action.user.abstract
+        parent: core.action.abstract
         class: Requestum\ApiBundle\Action\UpdateAction
         arguments:
             - AppBundle\Entity\User
             - AppBundle\Form\User\UserType
 
     action.user.delete:
-        parent: action.user.abstract
+        parent: core.action.abstract
         class: Requestum\ApiBundle\Action\DeleteAction
         arguments:
             - AppBundle\Entity\User

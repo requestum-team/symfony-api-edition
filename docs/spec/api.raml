@@ -88,8 +88,6 @@ types:
             name: string
             email: string
             enabled: true
-            site: Site|int
-            siteAdmins: SiteAdmin[]|int[]
             account: integer
 
     UserInput:
@@ -98,8 +96,6 @@ types:
             email: string
             plainPassword: string
             enabled: true
-            site: integer
-            siteAdmins: SiteAdminInput[]
 
     ResetPassword:
         properties:
@@ -176,7 +172,7 @@ types:
                         properties:
                             transport:
                                 type: string
-                                description: Transport id, to send token to user, can be one of ("web:password-reset", "web:registration-invite")
+                                description: Transport id, to send token to user, can be one of ("web:password-reset")
                 responses:
                     404:
                         description: If user with given email not found
@@ -185,8 +181,3 @@ types:
                                     type: NotFoundBody
                     204:
                         description: On success
-
-    /download:
-        /{id}:
-            get:
-                is: [adminSecured, fetchAction:{type: BatchPrint}]

@@ -16,6 +16,9 @@ services:
         tags:
             - { name: kernel.event_listener, event: oneup_uploader.post_persist, method: onUpload }
 
-    app.service.reset_password:
-        class: AppBundle\Service\ResetPassword\ResetPassword
-        arguments: ["@doctrine.orm.entity_manager", "@requestum_email_sender", "%default_email_from%", "%reset_password_link_template%"]
+
+    app.service.update_token_sender:
+        class: AppBundle\Service\UpdateTokenSender\UpdateTokenSender
+        public: true
+        arguments: ["@requestum_email_sender", "%default_email_from%", "%update_token_links%"]
+

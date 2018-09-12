@@ -40,7 +40,7 @@ class RequestUpdateTokenAction extends EntityAction
         ;
 
         if (!$form->isSubmitted()) {
-            throw new BadRequestHttpException('Wrong request');
+                throw new BadRequestHttpException('Wrong request');
         }
 
         try {

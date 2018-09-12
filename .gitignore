@@ -16,5 +16,7 @@
 /vendor/
 /web/bundles/
 .idea/
+.env
 node_modules
 web/docs
+/app/spool/*

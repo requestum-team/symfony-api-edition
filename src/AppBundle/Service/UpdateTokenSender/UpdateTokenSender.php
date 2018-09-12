@@ -36,7 +36,10 @@ class UpdateTokenSender
         $this->linkTemplates = $linkTemplates;
     }
 
-
+    /**
+     * @param string $transport
+     * @param User $user
+     */
     public function send($transport, User $user)
     {
         switch ($transport) {

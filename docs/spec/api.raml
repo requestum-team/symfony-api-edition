@@ -83,25 +83,19 @@ types:
         type: object
         properties:
             id: integer
-            externalId: string
-            externalService: string
             name: string
             email: string
-            enabled: true
-            account: integer
+            enabled: boolean
 
     UserInput:
         properties:
             name: string
             email: string
             plainPassword: string
-            enabled: true
 
     ResetPassword:
         properties:
             plainPassword: string
-
-
 
 /oauth/v2/token:
     post:
@@ -128,10 +122,10 @@ types:
 #                        description: Used with "urn:requestum:oauth2:grant-type:external-service" grant type, to specify external auth service. This api supports "facebook" and "google".
 #                        type: string
 #                        required: false
-                    token:
-                        description: Used with "urn:requestum:oauth2:grant-type:external-service" grant type, to pass external service access token.
-                        type: string
-                        required: false
+#                    token:
+#                        description: Used with "urn:requestum:oauth2:grant-type:external-service" grant type, to pass external service access token.
+#                        type: string
+#                        required: false
                     username:
                         description: Used with "password" grant type, to pass username.
                         type: string
@@ -145,7 +139,7 @@ types:
         post:
             is: [clientSecured, createAction: {inputType: UserInput, type: User}]
         get:
-            is: [secured, listAction: {type: User}, sortable]
+            is: [secured, listAction: {type: User}]
 
         /me:
             get:

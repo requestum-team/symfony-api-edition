@@ -43,7 +43,6 @@
         "white-october/pagerfanta-bundle": "^1.0"
     },
     "require-dev": {
-        "liip/functional-test-bundle": "^1.9",
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0"
     },

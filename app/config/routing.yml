@@ -9,3 +9,9 @@ app:
 auth:
     resource: "@AuthBundle/Resources/config/routing.yml"
     prefix:   /
+
+docs:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /docs/sandbox/index.html

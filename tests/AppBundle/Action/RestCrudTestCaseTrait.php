@@ -16,7 +16,7 @@ trait RestCrudTestCaseTrait
 
     protected $headers = [
         'Accept' => 'application/json',
-        'HTTP_Authorization' => 'Bearer AccessToken_For_Admin',
+        'HTTP_Authorization' => 'Bearer AccessToken_For_Client',
     ];
 
     /**
@@ -26,6 +26,8 @@ trait RestCrudTestCaseTrait
      */
     public function getItem($id = null, $statusCode = Response::HTTP_OK)
     {
+        $this->processParamWrapper($id);
+
         $this->getClient()->request(
             Request::METHOD_GET,
             $this->getResourceUrl().'/'.($id ?: $this->getExistedObjectId()),
@@ -132,6 +134,7 @@ trait RestCrudTestCaseTrait
         $contains = [],
         $method = Request::METHOD_PATCH
     ) {
+        $this->processParamWrapper($id);
         $id = $id ?: $this->getExistedObjectId();
 
         $this->getClient()
@@ -181,11 +184,14 @@ trait RestCrudTestCaseTrait
     /**
      * {@inheritdoc}
      */
-    public function deleteItem($statusCode = Response::HTTP_NO_CONTENT)
+    public function deleteItem($id = null, $statusCode = Response::HTTP_NO_CONTENT)
     {
+        $this->processParamWrapper($id);
+        $id = $id ?: $this->getExistedObjectId();
+
         $this->getClient()->request(
             Request::METHOD_DELETE,
-            $this->getResourceUrl().'/'.$id = $this->getExistedObjectId(),
+            $this->getResourceUrl().'/'.$id,
             [],
             [],
             $this->headers
@@ -297,15 +303,20 @@ trait RestCrudTestCaseTrait
     protected function processParamWrappers(array &$params)
     {
         array_walk_recursive($params, function (&$value) {
-            if (is_object($value) && $value instanceof ParamWrapper) {
-                $entity = $this->getObjectOf($value->getClass(), $value->getCriteria());
-
-                $value = PropertyAccess::createPropertyAccessorBuilder()
-                    ->enableExceptionOnInvalidIndex()
-                    ->getPropertyAccessor()
-                    ->getValue($entity, $value->getPath())
-                ;
-            }
+            $this->processParamWrapper($value);
         });
+    }
+
+    protected function processParamWrapper(&$value)
+    {
+        if (is_object($value) && $value instanceof ParamWrapper) {
+            $entity = $this->getObjectOf($value->getClass(), $value->getCriteria());
+
+            $value = PropertyAccess::createPropertyAccessorBuilder()
+                ->enableExceptionOnInvalidIndex()
+                ->getPropertyAccessor()
+                ->getValue($entity, $value->getPath())
+            ;
+        }
     }
 }

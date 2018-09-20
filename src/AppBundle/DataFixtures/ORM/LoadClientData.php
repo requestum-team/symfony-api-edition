@@ -11,14 +11,17 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadClientData extends AbstractFixture
 {
+    const CLIENT_ID = "Change this to unique client id!";
+    const CLIENT_SECRET = "Change this to unique client secret!";
+
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
         $client = new Client();
-        $client->setRandomId('20aa5tpwg04ks4w84o8cookswwccgkwko40gwcs0ws840wkssk');
-        $client->setSecret('79fqd7qzbp8g8o8oggss48w4kwck4s4kccwwk8804ksowg8o');
+        $client->setRandomId(static::CLIENT_ID);
+        $client->setSecret(static::CLIENT_SECRET);
         $client->setAllowedGrantTypes(['client_credentials', 'token', 'refresh_token', 'password']);
         $client->setRedirectUris([]);
         $this->addReference('auth-client', $client);

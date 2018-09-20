@@ -34,11 +34,11 @@ security:
             anonymous: ~
 
     access_decision_manager:
+        strategy: unanimous
         allow_if_all_abstain: true
-        strategy: affirmative
 
     access_control:
-        - { path: ^/api/users, method: POST, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/.*/forgot-password, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/.*/reset-password, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users$, method: POST, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/.+/update-token$, method: POST, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/t_.*$, method: PATCH, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, role: ROLE_USER }

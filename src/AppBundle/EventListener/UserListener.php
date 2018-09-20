@@ -51,10 +51,13 @@ class UserListener
      */
     private function encodePassword(User $user)
     {
-        $encodedPassword = $this->passwordEncoder->encodePassword($user, $user->getPlainPassword());
-        $user
-            ->setPassword($encodedPassword)
-            ->setConfirmationToken(null)
-            ->eraseCredentials();
+        if ($user->getPlainPassword()) {
+            $encodedPassword = $this->passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user
+                ->setPassword($encodedPassword)
+                ->setConfirmationToken(null)
+                ->eraseCredentials()
+            ;
+        }
     }
 }

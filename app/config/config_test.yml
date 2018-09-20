@@ -14,3 +14,17 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+doctrine:
+    dbal:
+        dbname: %database_name%__test
+
+security:
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: plaintext
+
+    # sf config replace this values if it aren't specified directly in config files
+    access_decision_manager:
+            strategy: unanimous
+            allow_if_all_abstain: true

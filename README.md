@@ -164,7 +164,7 @@ class ItemRepository extends EntityRepository implements FilterableRepositoryInt
 ```
 To create custom filters use Custom handlers.
 
-**_Custom handlers_**
+**_Custom handlers_** \
 To create custom filters you need: \
 1 Add new Handler. Example:
 ```php
@@ -220,7 +220,7 @@ services:
 ```
 
 
-**_Sorting_**
+**_Sorting_** \
 Available sorting by entity fields. To do this, add the property name and sort order to the request (pattern: 'field|order').
 Example ```GET /items?order-by=id|asc```
 
@@ -228,7 +228,7 @@ Example ```GET /items?order-by=id|asc```
 Add pagination to the request.\
 Example: ```GET /items?page=1&per-page=15```
 
-**_Expand_**
+**_Expand_** \
 You can use the related entity references (and expand as needed) in the responses.
 Add annotation ```@Reference``` to entity property for reference:
 ```php

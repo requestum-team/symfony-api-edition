@@ -59,7 +59,7 @@ services:
  
  2 Add service to routing \
 Example
- ```
+ ```php
  # config/routing.yml
  ...
  myitem.create:
@@ -162,9 +162,9 @@ class ItemRepository extends EntityRepository implements FilterableRepositoryInt
 }
 
 ```
-To create custom filters use [Custom handlers](#custom-handlers).
+To create custom filters use Custom handlers.
 
-## **Custom handlers**
+**_Custom handlers_**
 To create custom filters you need: \
 1 Add new Handler. Example:
 ```php
@@ -220,17 +220,15 @@ services:
 ```
 
 
-## **Sorting**
+**_Sorting_**
 Available sorting by entity fields. To do this, add the property name and sort order to the request (pattern: 'field|order').
 Example ```GET /items?order-by=id|asc```
 
 **_Pagination_**\
-Add pagination to the request.
+Add pagination to the request.\
 Example: ```GET /items?page=1&per-page=15```
 
-
-
-## Expand
+**_Expand_**
 You can use the related entity references (and expand as needed) in the responses.
 Add annotation ```@Reference``` to entity property for reference:
 ```php
@@ -282,7 +280,7 @@ myitem.fetch:
 ...
 ```
 **Additional functionality**\
-[Expand](#expand) available.
+Expand available. See [List Action](#list).
 
 ---------
 ## Update operation

@@ -74,7 +74,7 @@ Example
  `methods: POST` - need HTTP method \
  `_controller: action.myitem.create:executeAction` - service and action 
 
-#####Basic options
+#Basic options
  
  | Option                           | Type      | Available for actions | Example                                                   |
  | -------------------------------- | --------  | --------------------- |---------------------------------------------------------- |
@@ -95,14 +95,14 @@ Example
  
  
 ---------
-###Create operation
+#Create operation
 
 ---------------
-###Read operations
+#Read operations
 
 There are two types of read operations: collection operations ([List](#list)) and single item ([Fetch](#fetch)) operations.
 
-####List
+#List
 Get list of items. \
 Object type: collection \
 HTTP method: GET 
@@ -164,7 +164,7 @@ class ItemRepository extends EntityRepository implements FilterableRepositoryInt
 ```
 To create custom filters use [Custom handlers](#custom-handlers).
 
-#####Custom handlers
+#**Custom handlers**
 To create custom filters you need: \
 1 Add new Handler. Example:
 ```php
@@ -230,7 +230,7 @@ Example: ```GET /items?page=1&per-page=15```
 
 
 
-#####Expand
+#Expand
 You can use the related entity references (and expand as needed) in the responses.
 Add annotation ```@Reference``` to entity property for reference:
 ```php
@@ -253,7 +253,7 @@ With double reference you need to use the point (without spaces). \
 Example:
  ```GET /items?expand=associationEntity,otherAssociationEntity.relatedEntity```
 
-####Fetch
+#Fetch
 Get single item by identifier. \
 Object type: single item \
 HTTP method: GET 
@@ -285,10 +285,10 @@ myitem.fetch:
 [Expand](#expand) available.
 
 ---------
-###Update operation
+#Update operation
 
 ----------
-###Delete operations
+#Delete operations
 
 
 

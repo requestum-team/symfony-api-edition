@@ -164,7 +164,7 @@ class ItemRepository extends EntityRepository implements FilterableRepositoryInt
 ```
 To create custom filters use [Custom handlers](#custom-handlers).
 
-#**Custom handlers**
+_**Custom handlers**_
 To create custom filters you need: \
 1 Add new Handler. Example:
 ```php

@@ -56,94 +56,234 @@ CRUD operations
 
 There are two types of read operations: collection operations ([List](#list)) and single item ([Fetch](#fetch)) operations.
 
-## List
+### List
 Get list of items. \
 Object type: collection \
 HTTP method: GET 
 
-**Configuration** \
+#### Configuration
 1 Add service. Example: 
 ```php
 # config/services.yml
 
 services:
     ...
-    action.myitem.list:
+    action.country.list:
         parent: core.action.abstract
         class: Requestum\ApiBundle\Action\ListAction
         arguments:
-            - MyProject\MyBundle\Entity\MyItem
+            - MyProject\MyBundle\Entity\Сountry
         calls:
             - ['setOptions', 
                 [{
-                    'filters': ['someField1', 'someField2', 'someCustomFilter', 'query', 'order-by'],  
+                    'filters': ['query', 'order-by', 'name', 'language'],  
                     'preset_filters':{availableForUser: '__USER__', order-by: 'createdAt|desc'},
-                    'fetch_field':['collection'],
                 }]
             ]
     ...
 ```
-Where:\
- `- MyPoject\MyBundle\Entity\Items` - item class, required parameter \
- `['setOptions', ...]` - array of options
+Where: \
+`arguments: ... ` - required arguments to the `Requestum\ApiBundle\Action\ListAction` class constructor \
+`- MyProject\MyBundle\Entity\Сountry` - entity class (required) \
+`['setOptions', ...]` - array of options
 
 2 Add service to routing. Example: 
  ```php
  # config/routing.yml
 ...
-myitem.list:
-    path: /myitems
+country.list:
+    path: /country
     methods: GET
-    defaults: { _controller: action.myitem.list:executeAction }
+    defaults: { _controller: action.country.list:executeAction }
 ...
 ```
-**_Request example_** 
+#### Request example
 ```php
-http://mysite/myitems?someField=false
+http://mysite/country?expand=cities
+```
+#### Response example 
+```php
+{
+    total: 2,
+    entities: 
+        [
+            {
+                id: 1,
+                name: 'Australia',
+                language: 'English',
+                population: 25103900,               
+                status: true,
+                createdAt: "2018-03-22T10:49:07+00:00",
+                cities: 
+                    [
+                        {
+                            id: 11,
+                            name: 'Sydney',
+                            districts: [112, 113],
+                            population: 25103900,
+                            isCapital: false,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        },
+                        {
+                            id: 12,
+                            name: 'Melbourne',
+                            districts: [122],
+                            population: 4850740,
+                            isCapital: true,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        },
+                        {
+                            id: 13,
+                            name: 'Brisbane',
+                            districts: [131, 132],
+                            population: 2408223,
+                            isCapital: false,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        }
+                    ]
+            },
+            {
+                id: 2,
+                name: 'Spain',
+                language: 'Spanish',
+                population: 46700000,               
+                status: false,
+                createdAt: "2018-03-23T10:49:07+00:00",
+                cities: 
+                    [
+                        {
+                            id: 21,
+                            name: 'Madrid',
+                            districts: [212],
+                            population: 3165235,
+                            isCapital: true,
+                            createdAt: "2018-03-24T10:49:07+00:00"
+                        },
+                        {
+                            id: 22,
+                            name: 'Barcelona',
+                            districts: [224],
+                            population: 1602386,
+                            isCapital: false,
+                            createdAt: "2018-03-24T10:49:07+00:00"
+                        },
+                        {
+                            id: 23,
+                            name: 'Valencia',
+                            districts: [231, 232],
+                            population: 786424,
+                            isCapital: false,
+                            createdAt: "2018-03-24T10:49:07+00:00"
+                        }
+                    ]
+            }
+        ]
+}
 ```
 
+#### Additional functionality
 
-**Additional functionality**
-
-**_Sorting_** \
+##### Sorting
 To sort by entity one may add the property name and sort order to the request (pattern: 'field|order'). \
-Example ```GET /items?order-by=id|asc```
+Example ```GET /country?order-by=id|asc```
 
-**_Pagination_**\
+##### Pagination
 [Pagerfanta](https://github.com/whiteoctober/Pagerfanta) is used for pagination and works with DoctrineORM query objects only. \
 ApiBundle pagination configured with default options ```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (This setting can be changed in options, see ListAction Additional options). \
 One use pagination add ```page={int}``` and ```per-page={int}``` to the request.\
-Example: ```GET /items?page=1&per-page=15```
+Example: ```GET /country?page=1&per-page=15```
 
 **_Count only_**\
 To get the count of query results only one may add ```defaults: { count-only: true }``` 
-to the routing config.
+to the routing config. 
 
 **_Expand_** \
 One can use the related entity references instead of full value in the response (can be expanded on demand) by adding annotation ```@Reference``` to entity property, for example:
 ```php
-# YouBundle\Entity\Item.php;
+# YouBundle\Entity\Country.php;
 use Requestum\ApiBundle\Rest\Metadata;
 
-class Item
+class Country
 {
     ...
     /**
-     * @ORM\ManyToOne
+     * @ORM\OneToMany
      * @Reference
      **/
-    protected $associatedEntity;
+    protected $cities;
     ...
 }
 ```
 Add ```expand``` to the request for expand reference. For multiple references expansion according fields should be separated be commas(NB: no spaces needs here!).
 One use the point for expand the field in associated entity. \
-Example:
- ```GET /items?expand=associatedEntity,otherAssociatedEntity.relatedEntity```
+Example: 
+```php
+// GET /country?expand=cities&name=Australia
+{
+    total: 1,
+    entities: 
+        [
+            {
+                id: 1,
+                name: 'Australia',
+                language: 'English',
+                population: 25103900,               
+                status: true,
+                createdAt: "2018-03-22T10:49:07+00:00",
+                cities: 
+                    [
+                        {
+                            id: 11,
+                            name: 'Sydney',
+                            districts: [112, 113],
+                            population: 25103900,
+                            isCapital: false,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        },
+                        {
+                            id: 12,
+                            name: 'Melbourne',
+                            districts: [122],
+                            population: 4850740,
+                            isCapital: true,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        },
+                        {
+                            id: 13,
+                            name: 'Brisbane',
+                            districts: [131, 132],
+                            population: 2408223,
+                            isCapital: false,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        }
+                    ]
+            }
+        ]
+}
+
+// GET /country?name=Australia
+{
+    total: 1,
+    entities: 
+    [
+        {
+            id: 1,
+            name: 'Australia',
+            language: 'English',
+            population: 25103900,               
+            status: true,
+            createdAt: "2018-03-22T10:49:07+00:00",
+            cities: 
+                [11, 12, 13] 
+        }
+    ]
+}
+
+```
 
 
 
-**Additional options** 
+####  Additional options 
 
 **_Default per page (Pagination)_** \
 Results per page (20 by default). 
@@ -159,8 +299,8 @@ Add ```'pagerfanta_use_output_walkers': true``` to options for change.
 
 **_Serialization_** \
 One can serialize properties that belong to chosen groups only. \
-One use ```@Serializer\Groups({"groupName"})``` annotation to add some field to group. \
-To serialize some groups, add them to the option. Example: ```'serialization_groups': ['some-group']```
+One use ```@Serializer\Groups({"firstgroup"})``` annotation to add some field to group. \
+To serialize some groups, add them to the option. Example: ```'serialization_groups': ['firstgroup']```
 
 **_Filters_**
 
@@ -170,9 +310,9 @@ To add fields you need to edit the ```createHandlers()``` method in the entity r
 Add a filter using ```'filters': ['query']``` option. \
 Example:
 ```php
-# YourBundle\Repository\ItemRepository.php
+# YourBundle\Repository\CountryRepository.php
 
-class ItemRepository extends EntityRepository implements FilterableRepositoryInterface
+class CountryRepository extends EntityRepository implements FilterableRepositoryInterface
 {
     use ApiRepositoryTrait;
     ...
@@ -183,15 +323,15 @@ class ItemRepository extends EntityRepository implements FilterableRepositoryInt
     {
         return [
             new SearchHandler([
-               'someField',
-               'associationEntity.someField' // use the dot for fields of related entities
+               'language',
+               'cities.name' // use the dot for fields of related entities
             ])
         ];
     }
     ...
 }
 ```
-Sample query with filter: ``` GET /items?query=tex*```
+Sample query with filter: ``` GET /country?query=*nglish```
 
 **_Sorting_** \
 One may add the property name and sort order to the request (pattern: 'field|order') to sort. Example:
@@ -199,20 +339,20 @@ One may add the property name and sort order to the request (pattern: 'field|ord
 
 **_Filter by properties_** \
 Such filtering by entity is available:
-- exact matching (Example: ```GET /items?status=approved```);
+- exact matching (Example: ```GET /country?status=false```);
 - using comparison operators (`````!=, <=, <>````` etc.) and ```*```, ```'is_null_value'```, ```is_not_null_value``` 
-(Example: ```GET /items?status=!=declined``` )
+(Example: ```GET /country?status=!=true``` )
 
 To change the filtering logic by association entities or existing filters, one may to make changes to the ```getPathAliases()``` method in the entity repository. 
 Example:
 ```php
-# YourBundle\Repository\ItemRepository.php
+# YourBundle\Repository\CountryRepository.php
 
 use Doctrine\ORM\EntityRepository;
 use Requestum\ApiBundle\Repository\ApiRepositoryTrait;
 use Requestum\ApiBundle\Repository\FilterableRepositoryInterface;
 
-class ItemRepository extends EntityRepository implements FilterableRepositoryInterface
+class CountryRepository extends EntityRepository implements FilterableRepositoryInterface
 {
     use ApiRepositoryTrait;
 
@@ -223,7 +363,7 @@ class ItemRepository extends EntityRepository implements FilterableRepositoryInt
     {
         return [
             ...
-            'associationEntity' => '[associationEntity][id]',  
+            'city' => '[cities][id]',  
             ...
         ];
     }
@@ -252,9 +392,9 @@ class CustomFilteHandler extends AbstractHandler
 ``` 
 2 Add handler to item repository. Example:
 ```php
-# YourBundle\Repository\ItemRepository.php
+# YourBundle\Repository\CountryRepository.php
 
-class ItemRepository extends EntityRepository implements FilterableRepositoryInterface
+class CountryRepository extends EntityRepository implements FilterableRepositoryInterface
 {
     use ApiRepositoryTrait;
     ...
@@ -274,11 +414,11 @@ class ItemRepository extends EntityRepository implements FilterableRepositoryInt
 ```php
 services:
     ...
-    action.myitem.list:
+    action.country.list:
         parent: core.action.abstract
         class: Requestum\ApiBundle\Action\ListAction
         arguments:
-            - MyProject\MyBundle\Entity\MyItems
+            - MyProject\MyBundle\Entity\Country
         calls:
             - ['setOptions', [{'filters': ['customFilterName']}]]
     ...
@@ -294,15 +434,14 @@ Example:
 
 
 
-## Fetch
+### Fetch
 
 ---------
-## Update operation
+### Update operation
 
 ----------
-## Delete operations
+### Delete operations
 
-Defined options are: "check_user_scope", "default_per_page", "entity_manager", "fetch_field", "filters", "pagerfanta_fetch_join_collection", "pagerfanta_use_output_walkers", "preset_filters", "required_permission", "serialization_groups"."
-}
+
 
 

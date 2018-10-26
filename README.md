@@ -99,30 +99,28 @@ myitem.list:
 ```
 **_Request example_** 
 ```php
-http://mysite/myitems?status=false
+http://mysite/myitems?someField=false
 ```
 
 
 **Additional functionality**
 
 **_Sorting_** \
-Available sorting by entity fields. To sort, add the property name and sort order to the request (pattern: 'field|order'). \
+To sort by entity one may add the property name and sort order to the request (pattern: 'field|order'). \
 Example ```GET /items?order-by=id|asc```
 
 **_Pagination_**\
-ApiBundle use [Pagerfanta](https://packagist.org/packages/pagerfanta/pagerfanta) for pagination and works with DoctrineORM query objects only. \
-Also pagination uses default options: 
-```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (see ListAction Additional options). \
-To use pagination add ```page={int}``` and ```per-page={int}``` to the request.\
+[Pagerfanta](https://github.com/whiteoctober/Pagerfanta) is used for pagination and works with DoctrineORM query objects only. \
+ApiBundle pagination configured with default options ```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (This setting can be changed in options, see ListAction Additional options). \
+One use pagination add ```page={int}``` and ```per-page={int}``` to the request.\
 Example: ```GET /items?page=1&per-page=15```
 
 **_Count only_**\
-To get only the count of query results you need to add ```defaults: { count-only: true }``` 
-to the routing.
+To get the count of query results only one may add ```defaults: { count-only: true }``` 
+to the routing config.
 
 **_Expand_** \
-You can use the related entity references (and expand as needed) in the responses.
-Add annotation ```@Reference``` to entity property for reference:
+One can use the related entity references instead of full value in the response (can be expanded on demand) by adding annotation ```@Reference``` to entity property, for example:
 ```php
 # YouBundle\Entity\Item.php;
 use Requestum\ApiBundle\Rest\Metadata;
@@ -134,14 +132,14 @@ class Item
      * @ORM\ManyToOne
      * @Reference
      **/
-    protected $associationEntity;
+    protected $associatedEntity;
     ...
 }
 ```
-Add ```expand``` to the request for expand references. Many properties are separated by commas (without spaces). 
-With double reference you need to use the point (without spaces). \
+Add ```expand``` to the request for expand reference. For multiple references expansion according fields should be separated be commas(NB: no spaces needs here!).
+One use the point for expand the field in associated entity. \
 Example:
- ```GET /items?expand=associationEntity,otherAssociationEntity.relatedEntity```
+ ```GET /items?expand=associatedEntity,otherAssociatedEntity.relatedEntity```
 
 
 
@@ -152,16 +150,16 @@ Results per page (20 by default).
 Add ```'default_per_page': {int}``` to options for change.
 
 **_Fetch join collection (Pagination)_** \
-Whether the query joins a collection join collection. Type boolean, false by default.\
+Whether the query joins a collection join collection (boolean, false by default).\
 Add ```'pagerfanta_fetch_join_collection': true``` to options for change.
 
 **_Use output walkers (Pagination)_**\
-Whether to use output walkers pagination mode. Type boolean, null by default.\
+Whether to use output walkers pagination mode (boolean, null by default).\
 Add ```'pagerfanta_use_output_walkers': true``` to options for change.
 
 **_Serialization_** \
-You can serialize only the property that belong to the some groups. \
-To add to group use annotation  ```@Serializer\Groups({"groupName"})```. \
+One can serialize properties that belong to chosen groups only. \
+One use ```@Serializer\Groups({"groupName"})``` annotation to add some field to group. \
 To serialize some groups, add them to the option. Example: ```'serialization_groups': ['some-group']```
 
 **_Filters_**
@@ -196,16 +194,16 @@ class ItemRepository extends EntityRepository implements FilterableRepositoryInt
 Sample query with filter: ``` GET /items?query=tex*```
 
 **_Sorting_** \
-To sort, add the property name and sort order (pattern: 'field|order'). Example:
+One may add the property name and sort order to the request (pattern: 'field|order') to sort. Example:
 ```'order-by': 'createdAt|desc'```
 
 **_Filter by properties_** \
-Filtering by entity properties is available:
+Such filtering by entity is available:
 - exact matching (Example: ```GET /items?status=approved```);
 - using comparison operators (`````!=, <=, <>````` etc.) and ```*```, ```'is_null_value'```, ```is_not_null_value``` 
 (Example: ```GET /items?status=!=declined``` )
 
-To change the filtering logic by association entities or existing filters, you need to make changes to the ```getPathAliases()``` method in the entity repository. 
+To change the filtering logic by association entities or existing filters, one may to make changes to the ```getPathAliases()``` method in the entity repository. 
 Example:
 ```php
 # YourBundle\Repository\ItemRepository.php
@@ -232,7 +230,7 @@ class ItemRepository extends EntityRepository implements FilterableRepositoryInt
 }
 ```
 **_Custom filter_** \
-To create custom filters you need: \
+To create custom filters one need: \
 1 Add new Handler. Example:
 ```php
 # YourBundle\Filter\CustomFilteHandler
@@ -252,7 +250,7 @@ class CustomFilteHandler extends AbstractHandler
     }
 }
 ``` 
-2 Add handler to your item repository. Example:
+2 Add handler to item repository. Example:
 ```php
 # YourBundle\Repository\ItemRepository.php
 
@@ -287,8 +285,8 @@ services:
 ```
 
 **_Preset filters_** \
-Preset filters with values using ```preset_filters```. 
-When the value is ```__USER__```, the current authorized user object will be used.
+Preset filters with values using by ```preset_filters``` option. \
+One may add ```__USER__``` to value for using the object of the current authorized user.
 Example:
 ```php
 ['setOptions', [{'filters':['name'], 'preset_filters':{'status' : 'true', 'user': '__USER__'}}]]

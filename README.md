@@ -286,7 +286,7 @@ services:
 
 **_Preset filters_** \
 Preset filters with values using by ```preset_filters``` option. \
-One may add ```__USER__``` to value for using the object of the current authorized user.
+String value ```__USER__```  can be used as alias for the current authorized user.
 Example:
 ```php
 ['setOptions', [{'filters':['name'], 'preset_filters':{'status' : 'true', 'user': '__USER__'}}]]

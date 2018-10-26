@@ -25,73 +25,27 @@ CRUD operations
 - [Update](#update-operation)
 - [Delete](#delete-operations)
 
-| Method         | Action   | Description                                   | Example Route |
-| -------------- | -------- | --------------------------------------------- |-------------- |
-| POST           | create   | Create a new element                          |/items         |
-| GET            | fetch    | Retrieve element                              |/items         |
-|                | list     | Retrieve the list of elements (Collection)    |/items/{id}    |
-| PATCH          | update   | Update an element                             |/items/{id}    |
-| DELETE         | delete   | Delete an element                             |/items/{id}    |
-
-**Configuring operations** \
-1 Configure service \
-Example:
-```php
-# config/services.yml
-
-services:
-    ...
-    action.myitem.create:
-        parent: core.action.abstract
-        class: Requestum\ApiBundle\Action\CreateAction
-        arguments:
-            - AppBundle\Entity\MyItem
-            - AppBundle\Form\MyItem\MyItemType
-        calls:
-            - ['setOptions', [{'serialization_groups':['full_myitem', 'default'], 'before_save_events': ['action.before_save_myitem']}]]
-    ...
-```
- Where:\
- `action.myitem.create` - service name \
- `- MyPoject\MyBundle\Entity\Items` - item class, required parameter \
- `- MyPoject\MyBundle\Form\Item\ItemsType` - item form class, required for create and update operations \
- `'setOptions'` - array of options (See [Basic options](#basic-options))
- 
- 2 Add service to routing \
-Example
- ```php
- # config/routing.yml
- ...
- myitem.create:
-     path: /myitems
-     methods: POST
-     defaults: { _controller: action.myitem.create:executeAction }
-...
-```
- Where:\
- `myitem.create` - route name \
- `path: /myitems` - path \
- `methods: POST` - need HTTP method \
- `_controller: action.myitem.create:executeAction` - service and action 
-
 ## Basic options
  
- | Option                           | Type      | Available for actions | Example                                                   |
- | -------------------------------- | --------  | --------------------- |---------------------------------------------------------- |
- | serialization_groups             | array     | All                   |`'serialization_groups': ['default', 'my_group']`          |
- | access_attribute                 |           | All                   |                                                           |
- | serialization_check_access       | boolean   | All                   |`'serialization_check_access': false`                      |
- | fetch_field                      | string    | All                   |`'fetch_field': 'customIdentifierField'`                   |
- | preset_filters                   | array     | All                   |`preset_filters:{availableForUser: '__USER__'}`            |
- | use_lock                         | boolean   | Create, Update        |`'use_lock': true`                                         |
- | http_method                      | string    | Create, Update        |`'http_method': PUT`                                       |
- | success_status_code              | string    | Create, Update        |`'success_status_code' : Response::HTTP_CREATED`           |
- | return_entity                    | boolean   | Create, Update        |`'return_entity' : true`                                   |
- | form_options                     | array     | Create, Update        |                                                           |
- | before_save_events               | array     | Create, Update        |`'before_save_events': ['action.before_save_item']`        |
- | after_save_events                | array     | Create, Update        |`'after_save_events': ['action.after_save_item']`          |
- | filters                          | array     | List                  |`'filters': ['user', 'categories', 'query', 'order-by']`   |
- | before_delete_events             | array     | Delete                |`'before_delete_events': ['action.before_delete_item']`    |
+ | Option                           | Type      | Example                                                    |
+ | -------------------------------- | --------  | ---------------------------------------------------------- |
+ | serialization_groups             | array     | `'serialization_groups': ['default', 'my_group']`          |
+ | access_attribute                 |           |                                                            |
+ | serialization_check_access       | boolean   | `'serialization_check_access': false`                      |
+ | fetch_field                      | string    | `'fetch_field': 'customIdentifierField'`                   |
+ | preset_filters                   | array     | `preset_filters:{availableForUser: '__USER__'}`            |
+ | use_lock                         | boolean   | `'use_lock': true`                                         |
+ | http_method                      | string    | `'http_method': PUT`                                       |
+ | success_status_code              | string    | `'success_status_code' : Response::HTTP_CREATED`           |
+ | return_entity                    | boolean   | `'return_entity' : true`                                   |
+ | form_options                     | array     | `'form_options': {'validation_groups': ['create']}`        |
+ | before_save_events               | array     | `'before_save_events': ['action.before_save_item']`        |
+ | after_save_events                | array     | `'after_save_events': ['action.after_save_item']`          |
+ | filters                          | array     | `'filters': ['user', 'categories', 'query', 'order-by']`   |
+ | before_delete_events             | array     | `'before_delete_events': ['action.before_delete_item']`    |
+ | default_per_page                 | integer   | `'default_per_page': 15`                                   |
+ | pagerfanta_fetch_join_collection | boolean   | `'pagerfanta_fetch_join_collection': true`                 |
+ | pagerfanta_use_output_walkers    | boolean   | `'pagerfanta_use_output_walkers': true`                    |
  
  
 ---------
@@ -107,7 +61,8 @@ Get list of items. \
 Object type: collection \
 HTTP method: GET 
 
-Service configuration example:
+**Configuration** \
+1 Add service. Example: 
 ```php
 # config/services.yml
 
@@ -117,12 +72,22 @@ services:
         parent: core.action.abstract
         class: Requestum\ApiBundle\Action\ListAction
         arguments:
-            - MyProject\MyBundle\Entity\MyItems
+            - MyProject\MyBundle\Entity\MyItem
         calls:
-            - ['setOptions', [{'filters': ['user', 'post', 'collaborator', 'follower','query', 'order-by', 'feedForUser'],  preset_filters:{availableForUser: '__USER__', order-by: 'createdAt|desc'}}]]
+            - ['setOptions', 
+                [{
+                    'filters': ['someField1', 'someField2', 'someCustomFilter', 'query', 'order-by'],  
+                    'preset_filters':{availableForUser: '__USER__', order-by: 'createdAt|desc'},
+                    'fetch_field':['collection'],
+                }]
+            ]
     ...
 ```
-Routing example: 
+Where:\
+ `- MyPoject\MyBundle\Entity\Items` - item class, required parameter \
+ `['setOptions', ...]` - array of options
+
+2 Add service to routing. Example: 
  ```php
  # config/routing.yml
 ...
@@ -132,9 +97,114 @@ myitem.list:
     defaults: { _controller: action.myitem.list:executeAction }
 ...
 ```
-**Additional functionality**\
-**_Filters_**\
-Filtering by entity properties is available. \
+**_Request example_** 
+```php
+http://mysite/myitems?status=false
+```
+
+
+**Additional functionality**
+
+**_Sorting_** \
+Available sorting by entity fields. To sort, add the property name and sort order to the request (pattern: 'field|order'). \
+Example ```GET /items?order-by=id|asc```
+
+**_Pagination_**\
+ApiBundle use [Pagerfanta](https://packagist.org/packages/pagerfanta/pagerfanta) for pagination and works with DoctrineORM query objects only. \
+Also pagination uses default options: 
+```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (see ListAction Additional options). \
+To use pagination add ```page={int}``` and ```per-page={int}``` to the request.\
+Example: ```GET /items?page=1&per-page=15```
+
+**_Count only_**\
+To get only the count of query results you need to add ```defaults: { count-only: true }``` 
+to the routing.
+
+**_Expand_** \
+You can use the related entity references (and expand as needed) in the responses.
+Add annotation ```@Reference``` to entity property for reference:
+```php
+# YouBundle\Entity\Item.php;
+use Requestum\ApiBundle\Rest\Metadata;
+
+class Item
+{
+    ...
+    /**
+     * @ORM\ManyToOne
+     * @Reference
+     **/
+    protected $associationEntity;
+    ...
+}
+```
+Add ```expand``` to the request for expand references. Many properties are separated by commas (without spaces). 
+With double reference you need to use the point (without spaces). \
+Example:
+ ```GET /items?expand=associationEntity,otherAssociationEntity.relatedEntity```
+
+
+
+**Additional options** 
+
+**_Default per page (Pagination)_** \
+Results per page (20 by default). 
+Add ```'default_per_page': {int}``` to options for change.
+
+**_Fetch join collection (Pagination)_** \
+Whether the query joins a collection join collection. Type boolean, false by default.\
+Add ```'pagerfanta_fetch_join_collection': true``` to options for change.
+
+**_Use output walkers (Pagination)_**\
+Whether to use output walkers pagination mode. Type boolean, null by default.\
+Add ```'pagerfanta_use_output_walkers': true``` to options for change.
+
+**_Serialization_** \
+You can serialize only the property that belong to the some groups. \
+To add to group use annotation  ```@Serializer\Groups({"groupName"})```. \
+To serialize some groups, add them to the option. Example: ```'serialization_groups': ['some-group']```
+
+**_Filters_**
+
+**_Query filter_** \
+Available text search in some fields (```LIKE```). Supports wildcards (```*suffix```, ```prefix*```, ```*middle*```) \
+To add fields you need to edit the ```createHandlers()``` method in the entity repository. \
+Add a filter using ```'filters': ['query']``` option. \
+Example:
+```php
+# YourBundle\Repository\ItemRepository.php
+
+class ItemRepository extends EntityRepository implements FilterableRepositoryInterface
+{
+    use ApiRepositoryTrait;
+    ...
+    /**
+     * @inheritdoc
+     */
+    protected function createHandlers()
+    {
+        return [
+            new SearchHandler([
+               'someField',
+               'associationEntity.someField' // use the dot for fields of related entities
+            ])
+        ];
+    }
+    ...
+}
+```
+Sample query with filter: ``` GET /items?query=tex*```
+
+**_Sorting_** \
+To sort, add the property name and sort order (pattern: 'field|order'). Example:
+```'order-by': 'createdAt|desc'```
+
+**_Filter by properties_** \
+Filtering by entity properties is available:
+- exact matching (Example: ```GET /items?status=approved```);
+- using comparison operators (`````!=, <=, <>````` etc.) and ```*```, ```'is_null_value'```, ```is_not_null_value``` 
+(Example: ```GET /items?status=!=declined``` )
+
 To change the filtering logic by association entities or existing filters, you need to make changes to the ```getPathAliases()``` method in the entity repository. 
 Example:
 ```php
@@ -160,11 +230,8 @@ class ItemRepository extends EntityRepository implements FilterableRepositoryInt
         ];
     }
 }
-
 ```
-To create custom filters use Custom handlers.
-
-**_Custom handlers_** \
+**_Custom filter_** \
 To create custom filters you need: \
 1 Add new Handler. Example:
 ```php
@@ -219,68 +286,17 @@ services:
     ...
 ```
 
-
-**_Sorting_** \
-Available sorting by entity fields. To do this, add the property name and sort order to the request (pattern: 'field|order').
-Example ```GET /items?order-by=id|asc```
-
-**_Pagination_**\
-Add pagination to the request.\
-Example: ```GET /items?page=1&per-page=15```
-
-**_Expand_** \
-You can use the related entity references (and expand as needed) in the responses.
-Add annotation ```@Reference``` to entity property for reference:
-```php
-# YouBundle\Entity\Item.php;
-use Requestum\ApiBundle\Rest\Metadata;
-
-class Item
-{
-    ...
-    /**
-     * @ORM\ManyToOne
-     * @Reference
-     **/
-    protected $associationEntity;
-    ...
-}
-```
-Add ```expand``` to the request for expand references. Many properties are separated by commas (without spaces). 
-With double reference you need to use the point (without spaces). \
+**_Preset filters_** \
+Preset filters with values using ```preset_filters```. 
+When the value is ```__USER__```, the current authorized user object will be used.
 Example:
- ```GET /items?expand=associationEntity,otherAssociationEntity.relatedEntity```
+```php
+['setOptions', [{'filters':['name'], 'preset_filters':{'status' : 'true', 'user': '__USER__'}}]]
+```
+
+
 
 ## Fetch
-Get single item by identifier. \
-Object type: single item \
-HTTP method: GET 
-
-Service configuration example:
-```php
-# config/services.yml
-
-services:
-    ...
-    action.myitem.fetch:
-        parent: core.action.abstract
-        class: Requestum\ApiBundle\Action\FetchAction
-        arguments:
-            - MyBundle\Entity\MyItem
-    ...
-```
-Routing example: 
- ```php
- # config/routing.yml
-...
-myitem.fetch:
-    path: /myitems/{id}
-    methods: GET
-    defaults: { _controller: action.myitem.fetch:executeAction }
-...
-```
-**Additional functionality**\
-Expand available. See [List Action](#list).
 
 ---------
 ## Update operation
@@ -288,7 +304,7 @@ Expand available. See [List Action](#list).
 ----------
 ## Delete operations
 
-
-
+Defined options are: "check_user_scope", "default_per_page", "entity_manager", "fetch_field", "filters", "pagerfanta_fetch_join_collection", "pagerfanta_use_output_walkers", "preset_filters", "required_permission", "serialization_groups"."
+}
 
 

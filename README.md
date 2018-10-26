@@ -183,21 +183,21 @@ http://mysite/country?expand=cities
 
 #### Additional functionality
 
-##### Sorting
+#### Sorting
 To sort by entity one may add the property name and sort order to the request (pattern: 'field|order'). \
 Example ```GET /country?order-by=id|asc```
 
-##### Pagination
+#### Pagination
 [Pagerfanta](https://github.com/whiteoctober/Pagerfanta) is used for pagination and works with DoctrineORM query objects only. \
 ApiBundle pagination configured with default options ```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (This setting can be changed in options, see ListAction Additional options). \
 One use pagination add ```page={int}``` and ```per-page={int}``` to the request.\
 Example: ```GET /country?page=1&per-page=15```
 
-**_Count only_**\
+#### Count only
 To get the count of query results only one may add ```defaults: { count-only: true }``` 
 to the routing config. 
 
-**_Expand_** \
+#### Expand
 One can use the related entity references instead of full value in the response (can be expanded on demand) by adding annotation ```@Reference``` to entity property, for example:
 ```php
 # YouBundle\Entity\Country.php;
@@ -285,26 +285,26 @@ Example:
 
 ####  Additional options 
 
-**_Default per page (Pagination)_** \
+#### Default per page (Pagination)
 Results per page (20 by default). 
 Add ```'default_per_page': {int}``` to options for change.
 
-**_Fetch join collection (Pagination)_** \
+#### Fetch join collection (Pagination)
 Whether the query joins a collection join collection (boolean, false by default).\
 Add ```'pagerfanta_fetch_join_collection': true``` to options for change.
 
-**_Use output walkers (Pagination)_**\
+#### Use output walkers (Pagination)
 Whether to use output walkers pagination mode (boolean, null by default).\
 Add ```'pagerfanta_use_output_walkers': true``` to options for change.
 
-**_Serialization_** \
+#### Serialization
 One can serialize properties that belong to chosen groups only. \
 One use ```@Serializer\Groups({"firstgroup"})``` annotation to add some field to group. \
 To serialize some groups, add them to the option. Example: ```'serialization_groups': ['firstgroup']```
 
-**_Filters_**
+#### Filters
 
-**_Query filter_** \
+##### Query filter
 Available text search in some fields (```LIKE```). Supports wildcards (```*suffix```, ```prefix*```, ```*middle*```) \
 To add fields you need to edit the ```createHandlers()``` method in the entity repository. \
 Add a filter using ```'filters': ['query']``` option. \
@@ -333,11 +333,11 @@ class CountryRepository extends EntityRepository implements FilterableRepository
 ```
 Sample query with filter: ``` GET /country?query=*nglish```
 
-**_Sorting_** \
+##### Sorting
 One may add the property name and sort order to the request (pattern: 'field|order') to sort. Example:
 ```'order-by': 'createdAt|desc'```
 
-**_Filter by properties_** \
+##### Filter by properties
 Such filtering by entity is available:
 - exact matching (Example: ```GET /country?status=false```);
 - using comparison operators (`````!=, <=, <>````` etc.) and ```*```, ```'is_null_value'```, ```is_not_null_value``` 
@@ -369,7 +369,7 @@ class CountryRepository extends EntityRepository implements FilterableRepository
     }
 }
 ```
-**_Custom filter_** \
+##### Custom filter
 To create custom filters one need: \
 1 Add new Handler. Example:
 ```php
@@ -424,7 +424,7 @@ services:
     ...
 ```
 
-**_Preset filters_** \
+#### Preset filters
 Preset filters with values using by ```preset_filters``` option. \
 String value ```__USER__```  can be used as alias for the current authorized user.
 Example:

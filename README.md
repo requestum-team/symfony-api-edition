@@ -30,7 +30,7 @@ CRUD operations
 ---------------
 ## Read operations
 
-There are two types of read operations: collection operations ([List](#list)) and single item ([Fetch](#fetch)) operations.
+There are two types of read operations: collection operation ([List](#list)) and single item ([Fetch](#fetch)) operation.
 
 ### List
 Get list of items. \
@@ -216,7 +216,7 @@ Example ```GET /country?order-by=id|asc```
 
 #### Pagination
 [Pagerfanta](https://github.com/whiteoctober/Pagerfanta) is used for pagination and works with DoctrineORM query objects only. \
-ApiBundle pagination configured with default options ```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (This setting can be changed in options, see ListAction Additional options). \
+ApiBundle pagination configured with default options ```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (This setting can be changed in options). \
 One use pagination add ```page={int}``` and ```per-page={int}``` to the request.\
 Example: ```GET /country?page=1&per-page=15```
 
@@ -447,7 +447,7 @@ country.fetch:
 
 #### Request example
 ```php
-http://mysite/country/2?expand=cities
+http://mysite/country/1?expand=cities
 ```
 #### Response example 
 ```php

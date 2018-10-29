@@ -24,30 +24,6 @@ CRUD operations
 - [Read](#read-operations)
 - [Update](#update-operation)
 - [Delete](#delete-operations)
-
-## Basic options
- 
- | Option                           | Type      | Example                                                    |
- | -------------------------------- | --------  | ---------------------------------------------------------- |
- | serialization_groups             | array     | `'serialization_groups': ['default', 'my_group']`          |
- | access_attribute                 |           |                                                            |
- | serialization_check_access       | boolean   | `'serialization_check_access': false`                      |
- | fetch_field                      | string    | `'fetch_field': 'customIdentifierField'`                   |
- | preset_filters                   | array     | `preset_filters:{availableForUser: '__USER__'}`            |
- | use_lock                         | boolean   | `'use_lock': true`                                         |
- | http_method                      | string    | `'http_method': PUT`                                       |
- | success_status_code              | string    | `'success_status_code' : Response::HTTP_CREATED`           |
- | return_entity                    | boolean   | `'return_entity' : true`                                   |
- | form_options                     | array     | `'form_options': {'validation_groups': ['create']}`        |
- | before_save_events               | array     | `'before_save_events': ['action.before_save_item']`        |
- | after_save_events                | array     | `'after_save_events': ['action.after_save_item']`          |
- | filters                          | array     | `'filters': ['user', 'categories', 'query', 'order-by']`   |
- | before_delete_events             | array     | `'before_delete_events': ['action.before_delete_item']`    |
- | default_per_page                 | integer   | `'default_per_page': 15`                                   |
- | pagerfanta_fetch_join_collection | boolean   | `'pagerfanta_fetch_join_collection': true`                 |
- | pagerfanta_use_output_walkers    | boolean   | `'pagerfanta_use_output_walkers': true`                    |
- 
- 
 ---------
 ## Create operation
 
@@ -76,8 +52,12 @@ services:
         calls:
             - ['setOptions', 
                 [{
-                    'filters': ['query', 'order-by', 'name', 'language'],  
-                    'preset_filters':{availableForUser: '__USER__', order-by: 'createdAt|desc'},
+                    'default_per_page' : 15,
+                    'pagerfanta_fetch_join_collection' : true,
+                    'pagerfanta_use_output_walkers' : true,
+                    'serialization_groups': ['default', 'custom-group'],
+                    'filters' : ['query', 'order-by', 'name', 'language'],  
+                    'preset_filters' : {availableForUser: '__USER__', order-by: 'createdAt|desc'},
                 }]
             ]
     ...
@@ -97,211 +77,18 @@ country.list:
     defaults: { _controller: action.country.list:executeAction }
 ...
 ```
-#### Request example
-```php
-http://mysite/country?expand=cities
-```
-#### Response example 
-```php
-{
-    total: 2,
-    entities: 
-        [
-            {
-                id: 1,
-                name: 'Australia',
-                language: 'English',
-                population: 25103900,               
-                status: true,
-                createdAt: "2018-03-22T10:49:07+00:00",
-                cities: 
-                    [
-                        {
-                            id: 11,
-                            name: 'Sydney',
-                            districts: [112, 113],
-                            population: 25103900,
-                            isCapital: false,
-                            createdAt: "2018-03-23T10:49:07+00:00"
-                        },
-                        {
-                            id: 12,
-                            name: 'Melbourne',
-                            districts: [122],
-                            population: 4850740,
-                            isCapital: false,
-                            createdAt: "2018-03-23T10:49:07+00:00"
-                        },
-                        {
-                            id: 13,
-                            name: 'Brisbane',
-                            districts: [131, 132],
-                            population: 2408223,
-                            isCapital: false,
-                            createdAt: "2018-03-23T10:49:07+00:00"
-                        }
-                    ]
-            },
-            {
-                id: 2,
-                name: 'Spain',
-                language: 'Spanish',
-                population: 46700000,               
-                status: false,
-                createdAt: "2018-03-23T10:49:07+00:00",
-                cities: 
-                    [
-                        {
-                            id: 21,
-                            name: 'Madrid',
-                            districts: [212],
-                            population: 3165235,
-                            isCapital: true,
-                            createdAt: "2018-03-24T10:49:07+00:00"
-                        },
-                        {
-                            id: 22,
-                            name: 'Barcelona',
-                            districts: [224],
-                            population: 1602386,
-                            isCapital: false,
-                            createdAt: "2018-03-24T10:49:07+00:00"
-                        },
-                        {
-                            id: 23,
-                            name: 'Valencia',
-                            districts: [231, 232],
-                            population: 786424,
-                            isCapital: false,
-                            createdAt: "2018-03-24T10:49:07+00:00"
-                        }
-                    ]
-            }
-        ]
-}
-```
 
-#### Additional functionality
-
-#### Sorting
-To sort by entity one may add the property name and sort order to the request (pattern: 'field|order'). \
-Example ```GET /country?order-by=id|asc```
-
-#### Pagination
-[Pagerfanta](https://github.com/whiteoctober/Pagerfanta) is used for pagination and works with DoctrineORM query objects only. \
-ApiBundle pagination configured with default options ```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (This setting can be changed in options, see ListAction Additional options). \
-One use pagination add ```page={int}``` and ```per-page={int}``` to the request.\
-Example: ```GET /country?page=1&per-page=15```
-
-#### Count only
-To get the count of query results only one may add ```defaults: { count-only: true }``` 
-to the routing config. 
-
-#### Expand
-One can use the related entity references instead of full value in the response (can be expanded on demand) by adding annotation ```@Reference``` to entity property, for example:
-```php
-# YouBundle\Entity\Country.php;
-use Requestum\ApiBundle\Rest\Metadata;
-
-class Country
-{
-    ...
-    /**
-     * @ORM\OneToMany
-     * @Reference
-     **/
-    protected $cities;
-    ...
-}
-```
-Add ```expand``` to the request for expand reference. For multiple references expansion according fields should be separated be commas(NB: no spaces needs here!).
-One use the point for expand the field in associated entity. \
-Example: 
-```php
-// GET /country?expand=cities&name=Australia
-{
-    total: 1,
-    entities: 
-        [
-            {
-                id: 1,
-                name: 'Australia',
-                language: 'English',
-                population: 25103900,               
-                status: true,
-                createdAt: "2018-03-22T10:49:07+00:00",
-                cities: 
-                    [
-                        {
-                            id: 11,
-                            name: 'Sydney',
-                            districts: [112, 113],
-                            population: 25103900,
-                            isCapital: false,
-                            createdAt: "2018-03-23T10:49:07+00:00"
-                        },
-                        {
-                            id: 12,
-                            name: 'Melbourne',
-                            districts: [122],
-                            population: 4850740,
-                            isCapital: false,
-                            createdAt: "2018-03-23T10:49:07+00:00"
-                        },
-                        {
-                            id: 13,
-                            name: 'Brisbane',
-                            districts: [131, 132],
-                            population: 2408223,
-                            isCapital: false,
-                            createdAt: "2018-03-23T10:49:07+00:00"
-                        }
-                    ]
-            }
-        ]
-}
-
-// GET /country?name=Australia
-{
-    total: 1,
-    entities: 
-    [
-        {
-            id: 1,
-            name: 'Australia',
-            language: 'English',
-            population: 25103900,               
-            status: true,
-            createdAt: "2018-03-22T10:49:07+00:00",
-            cities: 
-                [11, 12, 13] 
-        }
-    ]
-}
-
-```
-
-####  Additional options 
-
-#### Default per page (Pagination)
-Results per page (20 by default). 
-Add ```'default_per_page': {int}``` to options for change.
-
-#### Fetch join collection (Pagination)
-Whether the query joins a collection join collection (boolean, false by default).\
-Add ```'pagerfanta_fetch_join_collection': true``` to options for change.
-
-#### Use output walkers (Pagination)
-Whether to use output walkers pagination mode (boolean, null by default).\
-Add ```'pagerfanta_use_output_walkers': true``` to options for change.
-
-#### Serialization
-One can serialize properties that belong to chosen groups only. \
-One use ```@Serializer\Groups({"firstgroup"})``` annotation to add some field to group. \
-To serialize some groups, add them to the option. Example: ```'serialization_groups': ['firstgroup']```
+#### Additional options 
+| Option                           | Type      | Default value               | Description                          |
+| -------------------------------- | --------  | ----------------------------|------------------------------------- |
+| default_per_page                 | integer   | 20                          | Results per page (Pagination)        |
+| pagerfanta_fetch_join_collection | boolean   | false                       | Whether the query joins a collection join collection (Pagination) |
+| pagerfanta_use_output_walkers    | boolean   | null                        | Whether the query joins a collection join collection (Pagination) |
+| serialization_groups             | array     | ['default']                   | One can serialize properties that belong to chosen groups only |
+| filters                          | array     | -                           | Filtering results ([More information](#filters))|
+| preset_filters                   | array     | -                           | Preset filters and values. String value ```__USER__```  can be used as alias for the current authorized user.|
 
 #### Filters
-
 ##### Query filter
 Available text search in some fields (```LIKE```). Supports wildcards (```*suffix```, ```prefix*```, ```*middle*```) \
 To add fields you need to edit the ```createHandlers()``` method in the entity repository. \
@@ -421,14 +208,188 @@ services:
             - ['setOptions', [{'filters': ['customFilterName']}]]
     ...
 ```
+#### Additional functionality
+#### Sorting
+To sort by entity one may add the property name and sort order to the request (pattern: 'field|order'). \
+Example ```GET /country?order-by=id|asc```
 
-#### Preset filters
-Preset filters with values using by ```preset_filters``` option. \
-String value ```__USER__```  can be used as alias for the current authorized user.
-Example:
+#### Pagination
+[Pagerfanta](https://github.com/whiteoctober/Pagerfanta) is used for pagination and works with DoctrineORM query objects only. \
+ApiBundle pagination configured with default options ```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (This setting can be changed in options, see ListAction Additional options). \
+One use pagination add ```page={int}``` and ```per-page={int}``` to the request.\
+Example: ```GET /country?page=1&per-page=15```
+
+#### Count only
+To get the count of query results only one may add ```defaults: { count-only: true }``` 
+to the routing config. 
+
+#### Expand
+One can use the related entity references instead of full value in the response (can be expanded on demand) by adding annotation ```@Reference``` to entity property, for example:
 ```php
-['setOptions', [{'filters':['name'], 'preset_filters':{'status' : 'true', 'user': '__USER__'}}]]
+# YouBundle\Entity\Country.php;
+use Requestum\ApiBundle\Rest\Metadata;
+
+class Country
+{
+    ...
+    /**
+     * @ORM\OneToMany
+     * @Reference
+     **/
+    protected $cities;
+    ...
+}
 ```
+Add ```expand``` to the request for expand reference. For multiple references expansion according fields should be separated be commas(NB: no spaces needs here!).
+One use the point for expand the field in associated entity. \
+Example: 
+```php
+// GET /country?expand=cities&name=Australia
+{
+    total: 1,
+    entities: 
+        [
+            {
+                id: 1,
+                name: 'Australia',
+                language: 'English',
+                population: 25103900,               
+                status: true,
+                createdAt: "2018-03-22T10:49:07+00:00",
+                cities: 
+                    [
+                        {
+                            id: 11,
+                            name: 'Sydney',
+                            districts: [112, 113],
+                            population: 25103900,
+                            isCapital: false,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        },
+                        {
+                            id: 12,
+                            name: 'Melbourne',
+                            districts: [122],
+                            population: 4850740,
+                            isCapital: false,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        },
+                        {
+                            id: 13,
+                            name: 'Brisbane',
+                            districts: [131, 132],
+                            population: 2408223,
+                            isCapital: false,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        }
+                    ]
+            }
+        ]
+}
+
+// GET /country?name=Australia
+{
+    total: 1,
+    entities: 
+    [
+        {
+            id: 1,
+            name: 'Australia',
+            language: 'English',
+            population: 25103900,               
+            status: true,
+            createdAt: "2018-03-22T10:49:07+00:00",
+            cities: 
+                [11, 12, 13] 
+        }
+    ]
+}
+
+```
+#### Request example
+```php
+http://mysite/country?expand=cities
+```
+#### Response example 
+```php
+{
+    total: 2,
+    entities: 
+        [
+            {
+                id: 1,
+                name: 'Australia',
+                language: 'English',
+                population: 25103900,               
+                status: true,
+                createdAt: "2018-03-22T10:49:07+00:00",
+                cities: 
+                    [
+                        {
+                            id: 11,
+                            name: 'Sydney',
+                            districts: [112, 113],
+                            population: 25103900,
+                            isCapital: false,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        },
+                        {
+                            id: 12,
+                            name: 'Melbourne',
+                            districts: [122],
+                            population: 4850740,
+                            isCapital: false,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        },
+                        {
+                            id: 13,
+                            name: 'Brisbane',
+                            districts: [131, 132],
+                            population: 2408223,
+                            isCapital: false,
+                            createdAt: "2018-03-23T10:49:07+00:00"
+                        }
+                    ]
+            },
+            {
+                id: 2,
+                name: 'Spain',
+                language: 'Spanish',
+                population: 46700000,               
+                status: false,
+                createdAt: "2018-03-23T10:49:07+00:00",
+                cities: 
+                    [
+                        {
+                            id: 21,
+                            name: 'Madrid',
+                            districts: [212],
+                            population: 3165235,
+                            isCapital: true,
+                            createdAt: "2018-03-24T10:49:07+00:00"
+                        },
+                        {
+                            id: 22,
+                            name: 'Barcelona',
+                            districts: [224],
+                            population: 1602386,
+                            isCapital: false,
+                            createdAt: "2018-03-24T10:49:07+00:00"
+                        },
+                        {
+                            id: 23,
+                            name: 'Valencia',
+                            districts: [231, 232],
+                            population: 786424,
+                            isCapital: false,
+                            createdAt: "2018-03-24T10:49:07+00:00"
+                        }
+                    ]
+            }
+        ]
+}
+```
+
 
 
 
@@ -474,6 +435,14 @@ country.fetch:
     defaults: { _controller: action.country.fetch:executeAction }
 ...
 ```
+#### Additional options 
+| Option                           | Type      | Default value               | Description                          |
+| -------------------------------- | --------  | ----------------------------|------------------------------------- |
+| serialization_groups             | array     | ['default']                   | One can serialize properties that belong to chosen groups only |
+| fetch_field                      | array     | 'id'                        | Possibility to use unique property of entity as an identifier |
+| access_attribute                 | string    | 'fetch'                     | Access attribute for check user permissions ([More information](#access-attribute)) |
+
+
 #### Request example
 ```php
 http://mysite/country/2?expand=cities
@@ -522,13 +491,6 @@ One can use the related entity references instead of full value in the response.
 
 
 #### Additional options
-#### Serialization
-One can serialize properties that belong to chosen groups only. See [Serialization in ListAction](#serialization)
-
-#### Fetch field
-Possibility to use unique property of entity as an identifier (```id``` by default). Add option `'fetch_field'` to change it. \
-Example: `'fetch_field': 'email'`.
-
 #### Access attribute
 Voters is used for check user permissions. To change the check logic one need: \
 1 Make changes to the security config (if needed). Example: 
@@ -573,6 +535,7 @@ services:
             - { name: security.voter }
 ...
 ```
+
 4 Add `'access_attribute'` to service config for set attributes to check user permissions (as needed). \
 `'access_attribute' : 'fetch'` by default.
 

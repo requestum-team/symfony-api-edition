@@ -439,7 +439,7 @@ country.fetch:
 | Option                           | Type      | Default value               | Description                          |
 | -------------------------------- | --------  | ----------------------------|------------------------------------- |
 | serialization_groups             | array     | ['default']                   | One can serialize properties that belong to chosen groups only |
-| fetch_field                      | array     | 'id'                        | Possibility to use unique property of entity as an identifier |
+| fetch_field                      | string    | 'id'                        | Possibility to use unique property of entity as an identifier |
 | access_attribute                 | string    | 'fetch'                     | Access attribute for check user permissions ([More information](#access-attribute)) |
 
 

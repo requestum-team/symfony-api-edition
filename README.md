@@ -509,14 +509,13 @@ access_decision_manager:
 use Requestum\ApiBundle\Security\Authorization\AbstractEntityVoter;
 
 class CustomVoter extends AbstractEntityVoter
-{
+{  
     /**
-     * @param $value
-     * @param User $user
-     *
-     * @return bool
+     * @param string $attribute
+     * @param object $entity
+     * @param UserInterface|null $user
      */
-    protected function voteOnProperty($value, UserInterface $user = null)
+     protected function voteOnEntity($attribute, $entity, UserInterface $user = null);
     {
         // some logic
     }

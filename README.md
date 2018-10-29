@@ -567,7 +567,7 @@ class CustomVoter extends AbstractEntityVoter
 services:
 ...
     voter.contry.owner:
-        class: AppBundle\Security\Entity\CustomVoter
+        class: YourBundle\Security\Entity\CustomVoter
         arguments: [[fetch, create, update, delete], AppBundle\Entity\Country, null]
         tags:
             - { name: security.voter }

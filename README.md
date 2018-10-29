@@ -129,7 +129,7 @@ http://mysite/country?expand=cities
                             name: 'Melbourne',
                             districts: [122],
                             population: 4850740,
-                            isCapital: true,
+                            isCapital: falce,
                             createdAt: "2018-03-23T10:49:07+00:00"
                         },
                         {
@@ -245,7 +245,7 @@ Example:
                             name: 'Melbourne',
                             districts: [122],
                             population: 4850740,
-                            isCapital: true,
+                            isCapital: falce,
                             createdAt: "2018-03-23T10:49:07+00:00"
                         },
                         {
@@ -280,8 +280,6 @@ Example:
 }
 
 ```
-
-
 
 ####  Additional options 
 
@@ -435,6 +433,150 @@ Example:
 
 
 ### Fetch
+Get single item by identifier. \
+Object type: item \
+HTTP method: GET 
+
+#### Configuration
+1 Add service. Example: 
+```php
+# config/services.yml
+
+services:
+    ...
+    action.country.fetch:
+        parent: core.action.abstract
+        class: Requestum\ApiBundle\Action\FetchAction
+        arguments:
+            - MyProject\MyBundle\Entity\Сountry
+        calls:
+            calls:
+            - ['setOptions', 
+                [{
+                    'serialization_groups':['full_post', 'default'],
+                    'fetch_field': 'email', 
+                    'check_user_scope': 0,
+                }]
+            ]
+    ...
+```
+Where: \
+`arguments: ... ` - required arguments to the `Requestum\ApiBundle\Action\FetchAction` class constructor \
+`- MyProject\MyBundle\Entity\Сountry` - entity class (required) \
+`['setOptions', ...]` - array of options
+
+2 Add service to routing. Example: 
+ ```php
+ # config/routing.yml
+...
+country.fetch:
+    path: /country/{id}
+    methods: GET
+    defaults: { _controller: action.country.fetch:executeAction }
+...
+```
+#### Request example
+```php
+http://mysite/country/2?expand=cities
+```
+#### Response example 
+```php
+{
+    id: 1,
+    name: 'Australia',
+    language: 'English',
+    population: 25103900,               
+    status: true,
+    createdAt: "2018-03-22T10:49:07+00:00",
+    cities: 
+        [
+            {
+                id: 11,
+                name: 'Sydney',
+                districts: [112, 113],
+                population: 25103900,
+                isCapital: false,
+                createdAt: "2018-03-23T10:49:07+00:00"
+            },
+            {
+                id: 12,
+                name: 'Melbourne',
+                districts: [122],
+                population: 4850740,
+                isCapital: falce,
+                createdAt: "2018-03-23T10:49:07+00:00"
+            },
+            {
+                id: 13,
+                name: 'Brisbane',
+                districts: [131, 132],
+                population: 2408223,
+                isCapital: false,
+                createdAt: "2018-03-23T10:49:07+00:00"
+            }
+        ]
+}
+```
+#### Additional functionality
+#### Expand
+One can use the related entity references instead of full value in the response. See [Expand in ListAction](#expand)
+
+
+#### Additional options
+#### Serialization
+One can serialize properties that belong to chosen groups only. See [Serialization in ListAction](#serialization)
+
+#### Fetch field
+Possibility to use unique property of entity as an identifier (```id``` by default). Add option `'fetch_field'` to change it. \
+Example: `'fetch_field': 'email'`.
+
+#### Access attribute
+Voters is used for check user permissions. To change the check logic one need: \
+1 Make changes to the security config (if needed). Example: 
+```php
+# config/security.yml
+...
+access_decision_manager:
+    strategy: unanimous
+    allow_if_all_abstain: true
+...
+```
+2 Add new voter. Example:
+```php
+# YourBundle\Security\Entity\CustomVoter.php
+
+use Requestum\ApiBundle\Security\Authorization\AbstractEntityVoter;
+
+class CustomVoter extends AbstractPropertyVoter
+{
+    /**
+     * @param $value
+     * @param User $user
+     *
+     * @return bool
+     */
+    protected function voteOnProperty($value, UserInterface $user = null)
+    {
+        // some logic
+    }
+}
+```
+3 Add new voter to services. Example:
+```php
+# config/services.yml
+
+services:
+...
+    voter.contry.owner:
+        class: AppBundle\Security\Entity\CustomVoter
+        arguments: [[fetch, create, update, delete], AppBundle\Entity\Country, null]
+        tags:
+            - { name: security.voter }
+...
+```
+4 Add `'access_attribute'` to service config for set attributes to check user permissions (as needed). \
+`'access_attribute' : 'fetch'` by default.
+
 
 ---------
 ### Update operation

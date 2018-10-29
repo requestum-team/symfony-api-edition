@@ -455,7 +455,6 @@ services:
                 [{
                     'serialization_groups':['full_post', 'default'],
                     'fetch_field': 'email', 
-                    'check_user_scope': 0,
                 }]
             ]
     ...
@@ -547,7 +546,7 @@ access_decision_manager:
 
 use Requestum\ApiBundle\Security\Authorization\AbstractEntityVoter;
 
-class CustomVoter extends AbstractPropertyVoter
+class CustomVoter extends AbstractEntityVoter
 {
     /**
      * @param $value

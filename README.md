@@ -568,7 +568,7 @@ services:
 ...
     voter.contry.owner:
         class: YourBundle\Security\Entity\CustomVoter
-        arguments: [[fetch, create, update, delete], AppBundle\Entity\Country, null]
+        arguments: [[fetch, create, update, delete], YourBundle\Entity\Country, null]
         tags:
             - { name: security.voter }
 ...

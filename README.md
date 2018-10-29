@@ -129,7 +129,7 @@ http://mysite/country?expand=cities
                             name: 'Melbourne',
                             districts: [122],
                             population: 4850740,
-                            isCapital: falce,
+                            isCapital: false,
                             createdAt: "2018-03-23T10:49:07+00:00"
                         },
                         {
@@ -245,7 +245,7 @@ Example:
                             name: 'Melbourne',
                             districts: [122],
                             population: 4850740,
-                            isCapital: falce,
+                            isCapital: false,
                             createdAt: "2018-03-23T10:49:07+00:00"
                         },
                         {
@@ -503,7 +503,7 @@ http://mysite/country/2?expand=cities
                 name: 'Melbourne',
                 districts: [122],
                 population: 4850740,
-                isCapital: falce,
+                isCapital: false,
                 createdAt: "2018-03-23T10:49:07+00:00"
             },
             {

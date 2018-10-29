@@ -84,7 +84,8 @@ country.list:
 | default_per_page                 | integer   | 20                          | Results per page (Pagination)        |
 | pagerfanta_fetch_join_collection | boolean   | false                       | Whether the query joins a collection join collection (Pagination) |
 | pagerfanta_use_output_walkers    | boolean   | null                        | Whether the query joins a collection join collection (Pagination) |
-| serialization_groups             | array     | ['default']                   | One can serialize properties that belong to chosen groups only |
+| serialization_groups             | array     | ['default']                 | One can serialize properties that belong to chosen groups only |
+| serialization_check_access       | boolean   | true                        | Check user access during serialization |
 | filters                          | array     | -                           | Filtering results ([More information](#filters))|
 | preset_filters                   | array     | -                           | Preset filters and values. String value ```__USER__```  can be used as alias for the current authorized user.|
 
@@ -438,7 +439,8 @@ country.fetch:
 #### Additional options 
 | Option                           | Type      | Default value               | Description                          |
 | -------------------------------- | --------  | ----------------------------|------------------------------------- |
-| serialization_groups             | array     | ['default']                   | One can serialize properties that belong to chosen groups only |
+| serialization_groups             | array     | ['default']                 | One can serialize properties that belong to chosen groups only |
+| serialization_check_access       | boolean   | true                        | Check user access during serialization |
 | fetch_field                      | string    | 'id'                        | Possibility to use unique property of entity as an identifier |
 | access_attribute                 | string    | 'fetch'                     | Access attribute for check user permissions ([More information](#access-attribute)) |
 
@@ -529,11 +531,16 @@ services:
 ...
     voter.country.owner:
         class: YourBundle\Security\Entity\CustomVoter
-        arguments: [[fetch, create, update, delete], YourBundle\Entity\Country, null]
+        arguments: [[fetch, create, update, delete], YourBundle\Entity\Country, true]
         tags:
             - { name: security.voter }
 ...
 ```
+Where: \
+`arguments: ... ` - arguments to the custom voter class constructor \
+`[fetch, create, update, delete]` - array of access attributes (required) \
+`YourBundle\Entity\Country` - entity class (required) \
+`true` - required user flag (optional, `true` by default) 
 
 4 Add `'access_attribute'` to service config for set attributes to check user permissions (as needed). \
 `'access_attribute' : 'fetch'` by default.

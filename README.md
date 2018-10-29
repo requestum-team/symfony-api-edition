@@ -527,7 +527,7 @@ class CustomVoter extends AbstractEntityVoter
 
 services:
 ...
-    voter.contry.owner:
+    voter.country.owner:
         class: YourBundle\Security\Entity\CustomVoter
         arguments: [[fetch, create, update, delete], YourBundle\Entity\Country, null]
         tags:

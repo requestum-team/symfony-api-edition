@@ -78,16 +78,16 @@ country.list:
 ...
 ```
 
-#### Additional options 
-| Option                           | Type      | Default value               | Description                          |
-| -------------------------------- | --------  | ----------------------------|------------------------------------- |
+#### Available Options 
+| Option                           | Type      | Default value               | Description                                                       |
+| -------------------------------- | --------  | ----------------------------|------------------------------------------------------------------ |
 | default_per_page                 | integer   | 20                          | Results per page (Pagination)        |
 | pagerfanta_fetch_join_collection | boolean   | false                       | Whether the query joins a collection join collection (Pagination) |
 | pagerfanta_use_output_walkers    | boolean   | null                        | Whether the query joins a collection join collection (Pagination) |
 | serialization_groups             | array     | ['default']                 | One can serialize properties that belong to chosen groups only |
 | serialization_check_access       | boolean   | true                        | Check user access during serialization |
-| filters                          | array     | -                           | Filtering results ([More information](#filters))|
-| preset_filters                   | array     | -                           | Preset filters and values. String value ```__USER__```  can be used as alias for the current authorized user.|
+| filters                          | array     | []                          | Filtering results ([More information](#filters))|
+| preset_filters                   | array     | []                          | Preset filters and values. String value ```__USER__```  can be used as alias for the current authorized user.|
 
 #### Filters
 ##### Query filter
@@ -210,10 +210,6 @@ services:
     ...
 ```
 #### Additional functionality
-#### Sorting
-To sort by entity one may add the property name and sort order to the request (pattern: 'field|order'). \
-Example ```GET /country?order-by=id|asc```
-
 #### Pagination
 [Pagerfanta](https://github.com/whiteoctober/Pagerfanta) is used for pagination and works with DoctrineORM query objects only. \
 ApiBundle pagination configured with default options ```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (This setting can be changed in options). \
@@ -221,9 +217,20 @@ One use pagination add ```page={int}``` and ```per-page={int}``` to the request.
 Example: ```GET /country?page=1&per-page=15```
 
 #### Count only
-To get the count of query results only one may add ```defaults: { count-only: true }``` 
-to the routing config. 
-
+To get the count of query results only one may add ```count-only``` to the request attributes. Add to routing configuration as an example:
+```php
+# config/routing.yml
+...
+country.list:
+    path: /country
+    methods: GET
+    defaults: 
+        {  
+            _controller: action.country.list:executeAction,
+            count-only: true
+        }
+...
+```
 #### Expand
 One can use the related entity references instead of full value in the response (can be expanded on demand) by adding annotation ```@Reference``` to entity property, for example:
 ```php
@@ -412,11 +419,10 @@ services:
         arguments:
             - MyProject\MyBundle\Entity\Сountry
         calls:
-            calls:
             - ['setOptions', 
                 [{
                     'serialization_groups':['full_post', 'default'],
-                    'fetch_field': 'email', 
+                    'fetch_field': 'email' 
                 }]
             ]
     ...
@@ -436,13 +442,13 @@ country.fetch:
     defaults: { _controller: action.country.fetch:executeAction }
 ...
 ```
-#### Additional options 
-| Option                           | Type      | Default value               | Description                          |
-| -------------------------------- | --------  | ----------------------------|------------------------------------- |
-| serialization_groups             | array     | ['default']                 | One can serialize properties that belong to chosen groups only |
-| serialization_check_access       | boolean   | true                        | Check user access during serialization |
-| fetch_field                      | string    | 'id'                        | Possibility to use unique property of entity as an identifier |
-| access_attribute                 | string    | 'fetch'                     | Access attribute for check user permissions ([More information](#access-attribute)) |
+#### Available Options 
+| Option                           | Type         | Default value               | Description                          |
+| -------------------------------- | -----------  | ----------------------------|------------------------------------- |
+| serialization_groups             | array        | ['default']                 | One can serialize properties that belong to chosen groups only |
+| serialization_check_access       | boolean      | true                        | Check user access during serialization |
+| fetch_field                      | string/array | 'id'                        | Possibility to use one (string) or more (array) property of entity as an unique identifier |
+| access_attribute                 | string       | 'fetch'                     | Access attribute for check user permissions ([More information](#access-attribute)) |
 
 
 #### Request example
@@ -492,10 +498,10 @@ http://mysite/country/1?expand=cities
 One can use the related entity references instead of full value in the response. See [Expand in ListAction](#expand)
 
 
-#### Additional options
+#### Available Options
 #### Access attribute
-Voters is used for check user permissions. To change the check logic one need: \
-1 Make changes to the security config (if needed). Example: 
+Symfony Voters is used for check the user's access permissions. `AccessDecisionManager` will receive value of `access_attribute` as `$attribute` and entity as `$object`. \
+Bundle provides the base class `AbstractEntityVoter`, which easy to use with the following settings for `access_decision_manager`:
 ```php
 # config/security.yml
 ...
@@ -504,7 +510,10 @@ access_decision_manager:
     allow_if_all_abstain: true
 ...
 ```
-2 Add new voter. Example:
+Also the bundle has a `OwnerVoter` class. It defines that the current user is the owner (property `$user`) of the entity (subject) with [update, delete] attributes. \
+One can create custom voters based on the `AbstractEntityVoter` class. Example:
+
+1 Add new voter:
 ```php
 # YourBundle\Security\Entity\CustomVoter.php
 
@@ -523,7 +532,7 @@ class CustomVoter extends AbstractEntityVoter
     }
 }
 ```
-3 Add new voter to services. Example:
+2 Add new voter to services:
 ```php
 # config/services.yml
 
@@ -542,7 +551,7 @@ Where: \
 `YourBundle\Entity\Country` - entity class (required) \
 `true` - required user flag (optional, `true` by default) 
 
-4 Add `'access_attribute'` to service config for set attributes to check user permissions (as needed). \
+3 Add `'access_attribute'` to service config for set attributes to check user permissions (as needed). \
 `'access_attribute' : 'fetch'` by default.
 
 

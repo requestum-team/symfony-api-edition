@@ -500,8 +500,8 @@ One can use the related entity references instead of full value in the response.
 
 #### Available Options
 #### Access attribute
-Symfony Voters are used for check the user's access permissions. `AccessDecisionManager` will receive value of `access_attribute` as `$attribute` and entity as `$object`. \
-Bundle provides the base class `AbstractEntityVoter`, which easy to use with the following settings for `access_decision_manager`:
+Symfony Voters are used for check the user's access permissions. `AccessDecisionManager` will receive value of `access_attribute` as `$attribute` and entity as subject. \
+Bundle provides the base class `AbstractEntityVoter`, which checks current user by token (if needed). It easy to use with the following settings for `access_decision_manager`:
 ```php
 # config/security.yml
 ...

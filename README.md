@@ -90,7 +90,7 @@ country.list:
 | preset_filters                   | array     | []                          | Preset filters and values. String value ```__USER__```  can be used as alias for the current authorized user.|
 
 ##### Filters
-_*Query filter*_\
+__*Query filter*__\
 Available text search in some fields (```LIKE```). Supports wildcards (```*suffix```, ```prefix*```, ```*middle*```) \
 To add fields you need to edit the ```createHandlers()``` method in the entity repository. \
 Add a filter using ```'filters': ['query']``` option. \

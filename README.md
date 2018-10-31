@@ -54,27 +54,21 @@ This bundle consist of next components:
    5. Base class for voters that vote on concrete resource entity
    6. Action classes
 
-
-CRUD operations
----------------
-- [Create](#create-operation) 
-- [Read](#read-operations)
-- [Update](#update-operation)
-- [Delete](#delete-operations)
+## Action classes
+- [List](#list-action)
+- [Fetch](#fetch-action)
+- [Create](#create-action) 
+- [Update](#update-action)
+- [Delete](#delete-action)
 ---------
 ## Create operation
 
----------------
-## Read operations
-
-There are two types of read operations: collection operation ([List](#list)) and single item ([Fetch](#fetch)) operation.
-
-### List
+## List action
 Get list of items. \
 Object type: collection \
 HTTP method: GET 
 
-#### Configuration
+### Configuration
 1 Add service. Example: 
 ```php
 # config/services.yml
@@ -115,7 +109,7 @@ country.list:
 ...
 ```
 
-#### Available Options 
+### Available Options 
 | Option                           | Type      | Default value               | Description                                                       |
 | -------------------------------- | --------  | ----------------------------|------------------------------------------------------------------ |
 | default_per_page                 | integer   | 20                          | Results per page (Pagination)        |
@@ -126,7 +120,7 @@ country.list:
 | filters                          | array     | []                          | Filtering results ([More information](#filters))|
 | preset_filters                   | array     | []                          | Preset filters and values. String value ```__USER__```  can be used as alias for the current authorized user.|
 
-#### *Filters*
+### *Filters*
 __Query filter__\
 Available text search in some fields (```LIKE```). Supports wildcards (```*suffix```, ```prefix*```, ```*middle*```) \
 To add fields you need to edit the ```createHandlers()``` method in the entity repository. \
@@ -246,7 +240,7 @@ services:
             - ['setOptions', [{'filters': ['customFilterName']}]]
     ...
 ```
-#### Additional functionality
+### Additional functionality
 #### *Pagination*
 [Pagerfanta](https://github.com/whiteoctober/Pagerfanta) is used for pagination and works with DoctrineORM query objects only. \
 ApiBundle pagination configured with default options ```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (This setting can be changed in options). \
@@ -351,11 +345,11 @@ Example:
 }
 
 ```
-#### Request example
+### Request example
 ```php
 http://mysite/country?expand=cities
 ```
-#### Response example 
+### Response example 
 ```php
 {
     total: 2,
@@ -435,12 +429,12 @@ http://mysite/country?expand=cities
 }
 ```
 
-### Fetch
+## Fetch action
 Get single item by identifier. \
 Object type: item \
 HTTP method: GET 
 
-#### Configuration
+### Configuration
 1 Add service. Example: 
 ```php
 # config/services.yml
@@ -476,7 +470,7 @@ country.fetch:
     defaults: { _controller: action.country.fetch:executeAction }
 ...
 ```
-#### Available Options 
+### Available Options 
 | Option                           | Type         | Default value               | Description                          |
 | -------------------------------- | -----------  | ----------------------------|------------------------------------- |
 | serialization_groups             | array        | ['default']                 | One can serialize properties that belong to chosen groups only |
@@ -542,15 +536,15 @@ Where: \
 3 Add `'access_attribute'` to service config for set attributes to check user permissions (as needed). \
 `'access_attribute' : 'fetch'` by default.
 
-#### Additional functionality
+### Additional functionality
 #### *Expand*
 One can use the related entity references instead of full value in the response. See [Expand in ListAction](#expand)
 
-#### Request example
+### Request example
 ```php
 http://mysite/country/1?expand=cities
 ```
-#### Response example 
+### Response example 
 ```php
 {
     id: 1,
@@ -589,10 +583,10 @@ http://mysite/country/1?expand=cities
 }
 ```
 ---------
-### Update operation
+## Update action
 
 ----------
-### Delete operations
+## Delete action
 
 
 

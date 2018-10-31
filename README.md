@@ -89,8 +89,8 @@ country.list:
 | filters                          | array     | []                          | Filtering results ([More information](#filters))|
 | preset_filters                   | array     | []                          | Preset filters and values. String value ```__USER__```  can be used as alias for the current authorized user.|
 
-##### __*Filters*__
-__*Query filter*__\
+#### *Filters*
+__Query filter__\
 Available text search in some fields (```LIKE```). Supports wildcards (```*suffix```, ```prefix*```, ```*middle*```) \
 To add fields you need to edit the ```createHandlers()``` method in the entity repository. \
 Add a filter using ```'filters': ['query']``` option. \

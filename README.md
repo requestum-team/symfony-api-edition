@@ -154,7 +154,7 @@ __Sorting__ \
 One may add the property name and sort order to the request (pattern: 'field|order') to sort. Example:
 ```'order-by': 'createdAt|desc'```
 
-*Filter by properties*
+__Filter by properties__ \
 Such filtering by entity is available:
 - exact matching (Example: ```GET /country?status=false```);
 - using comparison operators (`````!=, <=, <>````` etc.) and ```*```, ```'is_null_value'```, ```is_not_null_value``` 

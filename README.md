@@ -460,7 +460,7 @@ access_decision_manager:
 ...
 ```
 Also the bundle has a `OwnerVoter` class that working with [update, delete] attributes. 
-It uses the Symfony PropertyAccess Component to check the current user's relationship (is the owner) 
+It uses the Symfony PropertyAccess Component for check the current user's relationship (is the owner) 
 to the subject entity. The relationships checked by `$propertyPath` which is passed to the constructor for `OwnerVoter` class. \
 One can create custom voters based on the `AbstractEntityVoter` class. Example:
 

@@ -449,7 +449,8 @@ country.fetch:
 
 #### *Access attribute*
 Symfony Voters are used for check the user's access permissions. `AccessDecisionManager` will receive value of `access_attribute` as `$attribute` and entity as subject. \
-Bundle provides the base class `AbstractEntityVoter`, which checks current user by token (if needed). It easy to use with the following settings for `access_decision_manager`:
+Bundle provides the base class `AbstractEntityVoter`, which checks the user in the session depending on the received parameter `$userRequired` (optional, `true` by default). 
+It easy to use with the following settings for `access_decision_manager`:
 ```php
 # config/security.yml
 ...
@@ -458,7 +459,9 @@ access_decision_manager:
     allow_if_all_abstain: true
 ...
 ```
-Also the bundle has a `OwnerVoter` class. It defines that the current user is the owner (property `$user`) of the entity (subject) with [update, delete] attributes. \
+Also the bundle has a `OwnerVoter` class that working with [update, delete] attributes. 
+It uses the Symfony PropertyAccess Component to check the current user's relationship (is the owner) 
+to the subject entity. The relationships checked by `$propertyPath` which is passed to the constructor for `OwnerVoter` class. \
 One can create custom voters based on the `AbstractEntityVoter` class. Example:
 
 1 Add new voter:

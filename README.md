@@ -119,7 +119,7 @@ class CountryRepository extends EntityRepository implements FilterableRepository
 ```
 Sample query with filter: ``` GET /country?query=*nglish```
 
-##### *Sorting*
+__Sorting__ \
 One may add the property name and sort order to the request (pattern: 'field|order') to sort. Example:
 ```'order-by': 'createdAt|desc'```
 
@@ -155,7 +155,7 @@ class CountryRepository extends EntityRepository implements FilterableRepository
     }
 }
 ```
-*Custom filter*
+__Custom filter__ \
 To create custom filters one need: \
 1 Add new Handler. Example:
 ```php
@@ -210,13 +210,13 @@ services:
     ...
 ```
 #### Additional functionality
-#### Pagination
+#### *Pagination*
 [Pagerfanta](https://github.com/whiteoctober/Pagerfanta) is used for pagination and works with DoctrineORM query objects only. \
 ApiBundle pagination configured with default options ```pagerfanta_fetch_join_collection = false``` and ```pagerfanta_use_output_walkers = null``` (This setting can be changed in options). \
 One use pagination add ```page={int}``` and ```per-page={int}``` to the request.\
 Example: ```GET /country?page=1&per-page=15```
 
-#### Count only
+#### *Count only*
 To get the count of query results only one may add ```count-only``` to the request attributes. Add to routing configuration as an example:
 ```php
 # config/routing.yml
@@ -231,7 +231,7 @@ country.list:
         }
 ...
 ```
-#### Expand
+#### *Expand*
 One can use the related entity references instead of full value in the response (can be expanded on demand) by adding annotation ```@Reference``` to entity property, for example:
 ```php
 # YouBundle\Entity\Country.php;
@@ -398,9 +398,6 @@ http://mysite/country?expand=cities
 }
 ```
 
-
-
-
 ### Fetch
 Get single item by identifier. \
 Object type: item \
@@ -450,55 +447,7 @@ country.fetch:
 | fetch_field                      | string/array | 'id'                        | Possibility to use one (string) or more (array) property of entity as an unique identifier |
 | access_attribute                 | string       | 'fetch'                     | Access attribute for check user permissions ([More information](#access-attribute)) |
 
-
-#### Request example
-```php
-http://mysite/country/1?expand=cities
-```
-#### Response example 
-```php
-{
-    id: 1,
-    name: 'Australia',
-    language: 'English',
-    population: 25103900,               
-    status: true,
-    createdAt: "2018-03-22T10:49:07+00:00",
-    cities: 
-        [
-            {
-                id: 11,
-                name: 'Sydney',
-                districts: [112, 113],
-                population: 25103900,
-                isCapital: false,
-                createdAt: "2018-03-23T10:49:07+00:00"
-            },
-            {
-                id: 12,
-                name: 'Melbourne',
-                districts: [122],
-                population: 4850740,
-                isCapital: false,
-                createdAt: "2018-03-23T10:49:07+00:00"
-            },
-            {
-                id: 13,
-                name: 'Brisbane',
-                districts: [131, 132],
-                population: 2408223,
-                isCapital: false,
-                createdAt: "2018-03-23T10:49:07+00:00"
-            }
-        ]
-}
-```
-#### Additional functionality
-#### Expand
-One can use the related entity references instead of full value in the response. See [Expand in ListAction](#expand)
-
-
-#### Access attribute
+#### *Access attribute*
 Symfony Voters are used for check the user's access permissions. `AccessDecisionManager` will receive value of `access_attribute` as `$attribute` and entity as subject. \
 Bundle provides the base class `AbstractEntityVoter`, which checks current user by token (if needed). It easy to use with the following settings for `access_decision_manager`:
 ```php
@@ -553,7 +502,52 @@ Where: \
 3 Add `'access_attribute'` to service config for set attributes to check user permissions (as needed). \
 `'access_attribute' : 'fetch'` by default.
 
+#### Additional functionality
+#### *Expand*
+One can use the related entity references instead of full value in the response. See [Expand in ListAction](#expand)
 
+#### Request example
+```php
+http://mysite/country/1?expand=cities
+```
+#### Response example 
+```php
+{
+    id: 1,
+    name: 'Australia',
+    language: 'English',
+    population: 25103900,               
+    status: true,
+    createdAt: "2018-03-22T10:49:07+00:00",
+    cities: 
+        [
+            {
+                id: 11,
+                name: 'Sydney',
+                districts: [112, 113],
+                population: 25103900,
+                isCapital: false,
+                createdAt: "2018-03-23T10:49:07+00:00"
+            },
+            {
+                id: 12,
+                name: 'Melbourne',
+                districts: [122],
+                population: 4850740,
+                isCapital: false,
+                createdAt: "2018-03-23T10:49:07+00:00"
+            },
+            {
+                id: 13,
+                name: 'Brisbane',
+                districts: [131, 132],
+                population: 2408223,
+                isCapital: false,
+                createdAt: "2018-03-23T10:49:07+00:00"
+            }
+        ]
+}
+```
 ---------
 ### Update operation
 

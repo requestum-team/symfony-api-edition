@@ -89,8 +89,8 @@ country.list:
 | filters                          | array     | []                          | Filtering results ([More information](#filters))|
 | preset_filters                   | array     | []                          | Preset filters and values. String value ```__USER__```  can be used as alias for the current authorized user.|
 
-#### Filters
-##### Query filter
+##### Filters
+##### *Query filter*
 Available text search in some fields (```LIKE```). Supports wildcards (```*suffix```, ```prefix*```, ```*middle*```) \
 To add fields you need to edit the ```createHandlers()``` method in the entity repository. \
 Add a filter using ```'filters': ['query']``` option. \
@@ -498,7 +498,6 @@ http://mysite/country/1?expand=cities
 One can use the related entity references instead of full value in the response. See [Expand in ListAction](#expand)
 
 
-#### Available Options
 #### Access attribute
 Symfony Voters are used for check the user's access permissions. `AccessDecisionManager` will receive value of `access_attribute` as `$attribute` and entity as subject. \
 Bundle provides the base class `AbstractEntityVoter`, which checks current user by token (if needed). It easy to use with the following settings for `access_decision_manager`:

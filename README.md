@@ -141,7 +141,8 @@ class CountryRepository extends EntityRepository implements FilterableRepository
         return [
             new SearchHandler([
                'language',
-               'cities.name' // use the dot for fields of related entities
+               'cities.name', // use the dot for fields of related entities
+               'president_full_name' => ['president.firstName', 'president.lastName'] //use array to concatenate fields
             ])
         ];
     }
@@ -149,6 +150,10 @@ class CountryRepository extends EntityRepository implements FilterableRepository
 }
 ```
 Sample query with filter: ``` GET /country?query=*nglish```
+
+You can specify particular fields you want to search in (from list you passed to SearchHandler).
+
+``` GET /country?query[term]=*Charles*&query[fields]=president_full_name,cities.name```
 
 __Sorting__ \
 One may add the property name and sort order to the request (pattern: 'field|order') to sort. Example:

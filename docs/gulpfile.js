@@ -4,8 +4,10 @@ require('dotenv').config();
 
 let gulp = require('gulp');
 let replace = require('gulp-replace');
+let sequence = require('gulp-sequence');
 let del = require('del');
 let docsBuilder = require('api-console-builder');
+let exec = require('child_process').exec;
 
 let path = {
     build: {
@@ -28,14 +30,20 @@ gulp.task('clean', function (cb) {
 
 gulp.task('build-spec', ['clean'], function (cb) {
     return gulp.src(path.src.spec)
-        .pipe(replace('{{ BASE_URI }}', process.env.API_BASE_URI))
+        .pipe(replace('#{{ BASE_URI }}#', process.env.API_BASE_URI))
         .pipe(gulp.dest(path.build.spec))
+        ;
+});
 
+gulp.task('validate', function (cb) {
+    exec('npm run validate ', function (err, stdout, stderr) {
+        cb(err);
+    });
 });
 
 gulp.task('build-sandbox', function (cb) {
     docsBuilder({
-        src: 'node_modules/api-console',
+        src: 'https://github.com/mulesoft/api-console/archive/v4.2.1.zip',
         dest: path.build.web,
         raml: path.build.spec+'api.raml',
         useJson: true,
@@ -48,4 +56,4 @@ gulp.task('build-sandbox', function (cb) {
     });
 });
 
-gulp.task('build', ['clean', 'build-spec', 'build-sandbox']);
+gulp.task('build', sequence('validate', 'clean', 'build-spec', 'build-sandbox'));

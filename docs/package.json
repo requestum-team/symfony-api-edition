@@ -1,12 +1,17 @@
 {
   "name": "api-doc",
+  "scripts": {
+    "build": "gulp build",
+    "validate": "raml validate ./spec/api.raml"
+  },
   "dependencies": {
-    "api-console": "git+https://github.com/mulesoft/api-console.git",
-    "api-console-builder": "^0.4.8",
+    "api-console-builder": "^0.4.10",
     "del": "^3.0.0",
     "dotenv": "^5.0.1",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
-    "gulp-replace": "^0.6.1"
+    "gulp-replace": "^0.6.1",
+    "gulp-sequence": "^1.0.0",
+    "raml-cli": "^1.0.0"
   }
 }

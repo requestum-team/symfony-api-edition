@@ -1,7 +1,7 @@
 #%RAML 1.0
 
 title: test service API
-baseUri: {{ BASE_URI }}
+baseUri: #{{ BASE_URI }}#
 version: v1
 
 #securitySchemes:
@@ -112,20 +112,11 @@ types:
                         required: true
                     grant_type:
                         description: |
-                          Grant type can be one of:<br>
-                          "client_credentials" for annonymous token<br>
-#                          "urn:requestum:oauth2:grant-type:external-service" for user token granted by external auth service<br>
-                          "password" for regular user
+                            Grant type can be one of:<br>
+                            "client_credentials" for annonymous token<br>
+                            "password" for regular user
                         type: string
                         required: true
-#                    service:
-#                        description: Used with "urn:requestum:oauth2:grant-type:external-service" grant type, to specify external auth service. This api supports "facebook" and "google".
-#                        type: string
-#                        required: false
-#                    token:
-#                        description: Used with "urn:requestum:oauth2:grant-type:external-service" grant type, to pass external service access token.
-#                        type: string
-#                        required: false
                     username:
                         description: Used with "password" grant type, to pass username.
                         type: string
@@ -151,7 +142,7 @@ types:
             patch:
                 is: [secured, updateAction: {inputType: UserInput, type: User}]
         /{confirmationToken}:
-            queryParameters:
+            uriParameters:
                 confirmationToken:
                     description: Confirmation token requested by users/{email}/update-token endpoint. Should starts with "t_" prefix.
             patch:
@@ -170,8 +161,8 @@ types:
                 responses:
                     404:
                         description: If user with given email not found
-                            body:
-                                application/json:
-                                    type: NotFoundBody
+                        body:
+                            application/json:
+                                type: NotFoundBody
                     204:
                         description: On success

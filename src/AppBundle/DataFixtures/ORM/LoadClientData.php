@@ -40,7 +40,7 @@ class LoadClientData extends AbstractFixture implements ContainerAwareInterface
      */
     private function getParameter($name)
     {
-        if (($value = $this->container->getParameter('default_client_id')) == 'ChangeIt') {
+        if (($value = $this->container->getParameter($name)) == 'ChangeIt') {
             throw new \InvalidArgumentException('Please generate and change "'.$name.'" in parameters.yml. Or set it null to automatically generate random one (note that in this case it will be regenerated any time you reload fixtures).');
         }
 
